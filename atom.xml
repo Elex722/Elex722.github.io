@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.elex.vip</id>
     <title>Elex&apos;Blog</title>
-    <updated>2022-06-22T14:11:11.448Z</updated>
+    <updated>2022-07-06T09:24:27.164Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.elex.vip"/>
     <link rel="self" href="https://blog.elex.vip/atom.xml"/>
@@ -10,6 +10,34 @@
     <logo>https://blog.elex.vip/images/avatar.png</logo>
     <icon>https://blog.elex.vip/favicon.ico</icon>
     <rights>All rights reserved 2022, Elex&apos;Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Linux CentOS/RHEL firewall-cmd常用命令]]></title>
+        <id>https://blog.elex.vip/post/linux-centosrhel-firewall-cmd-chang-yong-ming-ling/</id>
+        <link href="https://blog.elex.vip/post/linux-centosrhel-firewall-cmd-chang-yong-ming-ling/">
+        </link>
+        <updated>2022-06-30T02:12:42.000Z</updated>
+        <content type="html"><![CDATA[<p>启动CentOS/RHEL 7后，防火墙规则设置由firewalld服务进程默认管理。<br>
+一个叫做firewall-cmd的命令行客户端支持和这个守护进程通信以永久修改防火墙规则。</p>
+<h1 id="查看状态">查看状态</h1>
+<pre><code class="language-linux">firewall-cmd --state
+</code></pre>
+<h1 id="查看防火墙所有信息">查看防火墙所有信息</h1>
+<pre><code class="language-linux">firewall-cmd --list-all
+</code></pre>
+<h1 id="查看已经开放的端口">查看已经开放的端口</h1>
+<pre><code class="language-linux">firewall-cmd --list-ports
+</code></pre>
+<h1 id="查看是否开放80端口">查看是否开放80端口</h1>
+<pre><code class="language-linux">firewall-cmd --query-port=80/tcp
+</code></pre>
+<h1 id="永久的开放一个新端口">永久的开放一个新端口</h1>
+<blockquote>
+<p>[Port] 端口</p>
+</blockquote>
+<pre><code class="language-linux">firewall-cmd --permanent --zone=public --add-port=[Port]/tcp
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Docker 常用命令]]></title>
         <id>https://blog.elex.vip/post/docker-chang-yong-ming-ling/</id>
@@ -954,6 +982,18 @@ equals()和hashCode()的应用，以及它们在HashMap中的重要性<br>
 不可变对象的好处<br>
 HashMap多线程的条件竞争<br>
 重新调整HashMap的大小</p>
+<h2 id="为什么hashmap中的键往往都使用string">“为什么HashMap中的键往往都使用String？”</h2>
+<p>1.hash（哈希，也称散列）算法：根据元素的hashCode值确定元 素的储存位置，从而快速定元素。相比于固定长度的数组，HashMap用hashCode值代替了索引值，使得HashMap的长度可 以自由增加。由于元素的hashCode值一般不会连续，所以元素的存储位置一般也不会连续，即随机存储</p>
+<p>2.HashMap的内部实现是通过key的hashcode来确定value的存储位置。</p>
+<p>3.HashMap是一种map，value应该由key唯一确定，key相同，value也应该相同，问题是，key的什么相同？值？地址？...</p>
+<p>3.1首先想到的是String对象的值，它不就很像字典中的索引。</p>
+<p>3.1.1恰巧，首先，String是不可变的，且重写了hashCode(),这使得，即使两个字符串对象的引用不同，但只要值相同，它们的hashcode就相同，就可以索引到相同的value，直接满足我们HashMap中hash和map的要求。</p>
+<p>3.1.2其次，每当创建一个字符串对象时，它的hashcode 就被缓存下来，所以在HashMap种储存时不需要再次计算,相比于其他对象更快。</p>
+<p>3.2如果key的地址（即对象的引用）呢？<br>
+<img src="https://github.com/Elex722/PicGo/blob/master/images/WechatIMG20.png?raw=true" alt="在这里插入图片描述" loading="lazy"></p>
+<p>3.2.1首先，使用没有重写hashCode（）的对象作key，这使得，只要两个对象的引用不同，它们的hashcode值就不同，想要索引出value，就必须使用储存该value时的key对象，相对于使用key的值，这样会更加严格。</p>
+<p>3.2.2其次，对象中一般不会存储该对象的hashCode值，在HashMap中储存时就得需要重新计算</p>
+<p>现在看来，仿佛冥冥之中，String与HashMap的相遇是注定的</p>
 <p><strong>总结</strong><br>
 HashMap的工作原理HashMap基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，让后找到bucket位置来储存值对象。当获取对象时，通过键对象的equals()方法找到正确的键值对，然后返回值对象。HashMap使用链表来解决碰撞问题，当发生碰撞了，对象将会储存在链表的下一个节点中。 HashMap在每个链表节点中储存键值对对象。当两个不同的键对象的hashcode相同时会发生什么？ 它们会储存在同一个bucket位置的链表中。键对象的equals()方法用来找到键值对。因为HashMap的好处非常多，在电子商务的应用中使用HashMap作为缓存。因为金融领域非常多的运用Java，也出于性能的考虑，我们会经常用到HashMap和ConcurrentHashMap。你可以查看更多的关于HashMap的文章:</p>
 ]]></content>
