@@ -258,7 +258,7 @@ firewall-cmd --state
                         src='https://blog.elex.vip/media/images/music.png' alt="音乐播放器" class="musicbtn"></i></a>
         </div>
         <div class="avatar-border">
-            <img src="https://blog.elex.vip/images/avatar.png?v=1657099463273" class="avatar">
+            <img src="https://blog.elex.vip/images/avatar.png?v=1658195771354" class="avatar">
         </div>
         <div class="sitename">Elex&#39;Blog</div>
         <span class="description" data-text='["To be or not to be, that&acute;s a question."]'>&nbsp;</span>
@@ -1137,6 +1137,9 @@ menulist.eq(i).show();
 </blockquote>
 <pre><code class="language-linux">firewall-cmd --permanent --zone=public --add-port=[Port]/tcp
 </code></pre>
+<h1 id="移除端口">移除端口</h1>
+<pre><code class="language-linux">firewall-cmd --permanent --remove-port=8080/tcp
+</code></pre>
 
             </div>
             <hr style="width: 80%;">
@@ -1207,6 +1210,7 @@ menulist.eq(i).show();
 <li><a href="#%E6%9F%A5%E7%9C%8B%E5%B7%B2%E7%BB%8F%E5%BC%80%E6%94%BE%E7%9A%84%E7%AB%AF%E5%8F%A3">查看已经开放的端口</a></li>
 <li><a href="#%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E5%BC%80%E6%94%BE80%E7%AB%AF%E5%8F%A3">查看是否开放80端口</a></li>
 <li><a href="#%E6%B0%B8%E4%B9%85%E7%9A%84%E5%BC%80%E6%94%BE%E4%B8%80%E4%B8%AA%E6%96%B0%E7%AB%AF%E5%8F%A3">永久的开放一个新端口</a></li>
+<li><a href="#%E7%A7%BB%E9%99%A4%E7%AB%AF%E5%8F%A3">移除端口</a></li>
 </ul>
 
                     </div>
