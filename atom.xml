@@ -1,0 +1,1352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://blog.elex.vip</id>
+    <title>Elex&apos;Blog</title>
+    <updated>2023-09-10T16:58:27.165Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://blog.elex.vip"/>
+    <link rel="self" href="https://blog.elex.vip/atom.xml"/>
+    <subtitle>To be or not to be, that&amp;acute;s a question.</subtitle>
+    <logo>https://blog.elex.vip/images/avatar.png</logo>
+    <icon>https://blog.elex.vip/favicon.ico</icon>
+    <rights>All rights reserved 2023, Elex&apos;Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[MongoDB 命令小记]]></title>
+        <id>https://blog.elex.vip/post/mongodb-ming-ling-xiao-ji/</id>
+        <link href="https://blog.elex.vip/post/mongodb-ming-ling-xiao-ji/">
+        </link>
+        <updated>2022-07-28T03:02:13.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="查询当前mongodb执行操作">查询当前MongoDB执行操作</h1>
+<pre><code class="language-shell">mongostat --host=[IP]  --port=[PORT]
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Linux CentOS/RHEL firewall-cmd常用命令]]></title>
+        <id>https://blog.elex.vip/post/linux-centosrhel-firewall-cmd-chang-yong-ming-ling/</id>
+        <link href="https://blog.elex.vip/post/linux-centosrhel-firewall-cmd-chang-yong-ming-ling/">
+        </link>
+        <updated>2022-06-30T02:12:42.000Z</updated>
+        <content type="html"><![CDATA[<p>启动CentOS/RHEL 7后，防火墙规则设置由firewalld服务进程默认管理。<br>
+一个叫做firewall-cmd的命令行客户端支持和这个守护进程通信以永久修改防火墙规则。</p>
+<h1 id="查看状态">查看状态</h1>
+<pre><code class="language-linux">firewall-cmd --state
+</code></pre>
+<h1 id="查看防火墙所有信息">查看防火墙所有信息</h1>
+<pre><code class="language-linux">firewall-cmd --list-all
+</code></pre>
+<h1 id="查看已经开放的端口">查看已经开放的端口</h1>
+<pre><code class="language-linux">firewall-cmd --list-ports
+</code></pre>
+<h1 id="查看是否开放80端口">查看是否开放80端口</h1>
+<pre><code class="language-linux">firewall-cmd --query-port=80/tcp
+</code></pre>
+<h1 id="永久的开放一个新端口">永久的开放一个新端口</h1>
+<blockquote>
+<p>[Port] 端口</p>
+</blockquote>
+<pre><code class="language-linux">firewall-cmd --permanent --zone=public --add-port=[Port]/tcp
+</code></pre>
+<h1 id="移除端口">移除端口</h1>
+<pre><code class="language-linux">firewall-cmd --permanent --remove-port=8080/tcp
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Docker 常用命令]]></title>
+        <id>https://blog.elex.vip/post/docker-chang-yong-ming-ling/</id>
+        <link href="https://blog.elex.vip/post/docker-chang-yong-ming-ling/">
+        </link>
+        <updated>2022-06-21T05:58:56.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-docker-基础命令">1. docker 基础命令</h1>
+<h2 id="11-启动docker命令">1.1. 启动docker命令</h2>
+<pre><code class="language-shell">systemctl start docker
+</code></pre>
+<h2 id="12-关闭docker命令">1.2. 关闭docker命令</h2>
+<pre><code class="language-shell">systemctl stop docker
+</code></pre>
+<h2 id="13-重启docker命令">1.3. 重启docker命令</h2>
+<pre><code class="language-shell">systemctl restart docker
+</code></pre>
+<h2 id="14-查看docker状态命令">1.4. 查看docker状态命令</h2>
+<pre><code class="language-shell">systemctl status docker
+</code></pre>
+<h2 id="15-查看docker版本命令">1.5. 查看docker版本命令</h2>
+<pre><code class="language-shell">docker version
+</code></pre>
+<h2 id="16-查看docker信息命令">1.6. 查看docker信息命令</h2>
+<pre><code class="language-shell">docker info
+</code></pre>
+<h2 id="17-docker-帮助命令">1.7. docker 帮助命令</h2>
+<p>忘记了某些命令便可使用此进行查看与回顾</p>
+<pre><code class="language-shell">docker --help
+</code></pre>
+<p>比如 咱忘记了 拉取命令 不知道可以带哪些参数 咱可以这样使用</p>
+<pre><code class="language-shell">docker pull --help
+</code></pre>
+<h1 id="2-docker-镜像命令">2. docker 镜像命令</h1>
+<h2 id="21-查看自己服务器中docker-镜像列表">2.1. 查看自己服务器中docker 镜像列表</h2>
+<pre><code class="language-shell">docker images
+</code></pre>
+<h2 id="22-搜索镜像">2.2. 搜索镜像</h2>
+<blockquote>
+<p>[MirrorName] 镜像名</p>
+</blockquote>
+<pre><code class="language-shell">docker search [MirrorName]
+</code></pre>
+<p>搜索 STARS &gt;9000的 mysql 镜像</p>
+<pre><code class="language-shell">docker search --filter=STARS=9000 mysql
+</code></pre>
+<h2 id="23-拉取镜像">2.3. 拉取镜像</h2>
+<p>不加tag(版本号) 即拉取docker仓库中 该镜像的最新版本latest 加:tag 则是拉取指定版本</p>
+<blockquote>
+<p>[MirrorName] 镜像名<br>
+[Tag] 版本号</p>
+</blockquote>
+<pre><code class="language-shell">docker pull [MirrorName]
+docker pull [MirrorName]:[Tag]
+</code></pre>
+<h2 id="24-运行镜像">2.4. 运行镜像</h2>
+<blockquote>
+<p>[MirrorName] 镜像名<br>
+[Tag] 版本号</p>
+</blockquote>
+<pre><code class="language-shell">docker run [MirrorName]
+docker run [MirrorName]:[Tag]
+</code></pre>
+<h2 id="25-删除镜像">2.5. 删除镜像</h2>
+<p>当前镜像没有被任何容器使用才可以删除</p>
+<blockquote>
+<p>[MirrorName] 镜像名<br>
+[MirrorID] 镜像ID</p>
+</blockquote>
+<h3 id="251-删除一个">2.5.1. 删除一个</h3>
+<pre><code class="language-shell">docker rmi -f [MirrorName]/[MirrorID]
+</code></pre>
+<h3 id="252-删除多个-其镜像id或镜像用用空格隔开即可">2.5.2. 删除多个 其镜像ID或镜像用用空格隔开即可</h3>
+<pre><code class="language-shell">docker rmi -f [MirrorName]/[MirrorID] [MirrorName]/[MirrorID] [MirrorName]/[MirrorID]
+</code></pre>
+<h3 id="253-删除全部镜像-a-意思为显示全部-q-意思为只显示id">2.5.3. 删除全部镜像 -a 意思为显示全部, -q 意思为只显示ID</h3>
+<pre><code class="language-shell">docker rmi -f $(docker images -aq)
+</code></pre>
+<h2 id="26-强制删除镜像">2.6. 强制删除镜像</h2>
+<blockquote>
+<p>[MirrorName] 镜像名<br>
+[MirrorID] 镜像ID</p>
+</blockquote>
+<pre><code class="language-shell">docker image rm [MirrorName]/[MirrorID]
+</code></pre>
+<h2 id="27-保存镜像">2.7. 保存镜像</h2>
+<blockquote>
+<p>[MirrorName] 镜像名<br>
+[MirrorID] 镜像ID</p>
+</blockquote>
+<pre><code class="language-shell">docker save [MirrorName]/[MirrorID] -o [Path]/[FileName]
+</code></pre>
+<p>exmaple:</p>
+<pre><code class="language-shell">docker save tomcat -o /myimg.tar
+</code></pre>
+<h2 id="28-加载镜像">2.8. 加载镜像</h2>
+<p>任何装 docker 的地方加载镜像保存文件,使其恢复为一个镜像</p>
+<blockquote>
+<p>[Path] 路径<br>
+[FileName] 文件名</p>
+</blockquote>
+<pre><code class="language-shell">docker load -i [Path]/[FileName]
+</code></pre>
+<h1 id="3-docker-容器命令">3. docker 容器命令</h1>
+<h2 id="31-查看容器列表">3.1. 查看容器列表</h2>
+<h3 id="311-查看正在运行容器列表">3.1.1. 查看正在运行容器列表</h3>
+<pre><code class="language-shell">docker ps
+</code></pre>
+<h3 id="312-查看所有容器">3.1.2. 查看所有容器</h3>
+<p>包含正在运行 和已停止的</p>
+<pre><code class="language-shell">docker ps -a
+</code></pre>
+<h2 id="32-构建容器">3.2. 构建容器</h2>
+<blockquote>
+<p>-it 表示 与容器进行交互式启动<br>
+-d 表示可后台运行容器 （守护式运行）<br>
+--restart=always 容器自动重启<br>
+-v 宿主机文件存储位置:容器内文件位置 可同时挂载多个文件，须多个-v<br>
+[HostFilePath] 宿主机文件存储位置<br>
+[ContainerFilePath] 容器内文件位置<br>
+--name 给要运行的容器 起的名字<br>
+[Alias] 容器别名<br>
+-p 宿主机端口:容器端口<br>
+[HostPort] 宿主机端口<br>
+[ContainerPort] 容器端口<br>
+[MirrorName] 镜像名<br>
+[MirrorID] 镜像ID<br>
+/bin/bash  交互路径</p>
+</blockquote>
+<pre><code class="language-shell">docker run -it -d --restart=always -v [HostFilePath]:[ContainerFilePath] -name [Alias] -p [HostPort]:[ContainerPort] [MirrorName]/[MirrorID] /bin/bash
+</code></pre>
+<h2 id="33-启动容器">3.3. 启动容器</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker start [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="34-停止容器">3.4. 停止容器</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker stop [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="35-重启容器">3.5. 重启容器</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker restart [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="36-杀掉容器">3.6. 杀掉容器</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker kill [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="37-已有容器设置自动重启">3.7. 已有容器设置自动重启</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker update --restart=always [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="38-进入容器">3.8. 进入容器</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID<br>
+/bin/bash  交互路径</p>
+</blockquote>
+<pre><code class="language-shell">docker exec -it [ContainerName]/[ContainerID] /bin/bash
+</code></pre>
+<h2 id="39-容器文件拷贝">3.9. 容器文件拷贝</h2>
+<p>无论容器是否开启 都可以进行拷贝</p>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID<br>
+[ContainerPath] 容器内路径<br>
+[HostPath] 宿主机路径</p>
+</blockquote>
+<h2 id="391-从容器内拷贝至宿主机">3.9.1. 从容器内拷贝至宿主机</h2>
+<pre><code class="language-shell">docker cp [ContainerName]/[ContainerID] [ContainerPath] [HostPath]
+</code></pre>
+<h2 id="392-从宿主机拷贝至容器内">3.9.2. 从宿主机拷贝至容器内</h2>
+<pre><code class="language-shell">docker cp [HostPath] [ContainerName]/[ContainerID] [ContainerPath]
+</code></pre>
+<h2 id="310-查看容器日志">3.10. 查看容器日志</h2>
+<blockquote>
+<p>[Line] 行数 要查看末尾多少行 默认all<br>
+[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker logs -f --tail=[Line] [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="311-更换容器名称">3.11. 更换容器名称</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID<br>
+[NewContainerName] 新容器名称</p>
+</blockquote>
+<pre><code class="language-shell">docker rename [ContainerName]/[ContainerID] [NewContainerName]
+</code></pre>
+<h2 id="312-查看容器进程">3.12. 查看容器进程</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker top [ContainerName]/[ContainerID]
+</code></pre>
+<h2 id="313-查看容器信息">3.13. 查看容器信息</h2>
+<blockquote>
+<p>[ContainerName] 容器名称<br>
+[ContainerID] 容器ID</p>
+</blockquote>
+<pre><code class="language-shell">docker inspect [ContainerName]/[ContainerID]
+</code></pre>
+<h1 id="4-docker-进阶命令">4. docker 进阶命令</h1>
+<h2 id="41-提交一个镜像">4.1. 提交一个镜像</h2>
+<p>我们运行的容器可能在镜像的基础上做了一些修改，有时候我们希望保存起来，封装成一个更新的镜像，这时候我们就需要使用 commit 命令来构建一个新的镜像</p>
+<blockquote>
+<p>-m 提交信息<br>
+[CommitInfo] 提交信息的内容   -m=&quot;初次提交&quot;<br>
+-a 作者信息<br>
+[Author] 作者信息内容 -a=&quot;Elex&quot;<br>
+[ContainerName] 容器名称<br>
+[ContainerID] 容器ID<br>
+[MirrorName] 提交的镜像名称<br>
+[Tag] 镜像版本号</p>
+</blockquote>
+<pre><code class="language-shell">docker commit -m=[CommitInfo] -a=[Author] [ContainerName]/[ContainerID] [MirrorName]:[Tag]
+</code></pre>
+<h2 id="42-打包一个镜像">4.2. 打包一个镜像</h2>
+<blockquote>
+<p>-t 镜像名称:镜像版本号<br>
+[MirrorName] 打包的镜像名称<br>
+[Tag] 镜像版本号<br>
+. 当前目录</p>
+</blockquote>
+<pre><code class="language-shell">docker build build -t [MirrorName]:[Tag] . 
+</code></pre>
+<h1 id="5-docker-运维命令">5. docker 运维命令</h1>
+<h2 id="51-查看docker工作目录">5.1. 查看docker工作目录</h2>
+<pre><code class="language-shell">sudo docker info | grep &quot;Docker Root Dir&quot;
+</code></pre>
+<h2 id="52-查看docker磁盘占用总体情况">5.2. 查看docker磁盘占用总体情况</h2>
+<pre><code class="language-shell">du -hs /var/lib/docker/
+</code></pre>
+<h2 id="53-查看docker的磁盘使用具体情况">5.3. 查看docker的磁盘使用具体情况</h2>
+<pre><code class="language-shell">docker system df
+</code></pre>
+<h1 id="54-删除-无用的容器和-镜像">5.4. 删除 无用的容器和 镜像</h1>
+<h3 id="541-删除异常停止的容器">5.4.1. 删除异常停止的容器</h3>
+<pre><code class="language-shell">docker rm `docker ps -a | grep Exited | awk '{print $1}'`
+</code></pre>
+<h3 id="542-删除名称或标签为none的镜像">5.4.2. 删除名称或标签为none的镜像</h3>
+<pre><code class="language-shell">docker rmi -f  `docker images | grep '&lt;none&gt;' | awk '{print $3}'`
+</code></pre>
+<h1 id="55-清除所有无容器使用的镜像">5.5. 清除所有无容器使用的镜像</h1>
+<pre><code class="language-shell">docker system prune -a
+</code></pre>
+<h1 id="56-查找大文件">5.6. 查找大文件</h1>
+<pre><code class="language-shell">find / -type f -size +100M -print0 | xargs -0 du -h | sort -nr
+</code></pre>
+<h1 id="57-查找指定docker使用目录下大于指定大小文件">5.7. 查找指定docker使用目录下大于指定大小文件</h1>
+<blockquote>
+<p>[Path] 路径 目录</p>
+</blockquote>
+<pre><code class="language-shell">find / -type f -size +100M -print0 | xargs -0 du -h | sort -nr |grep [Path]
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SpringBoot集成Quartz自定义表管理定时器]]></title>
+        <id>https://blog.elex.vip/post/springboot-ji-cheng-quartz-zi-ding-yi-biao-guan-li-ding-shi-qi/</id>
+        <link href="https://blog.elex.vip/post/springboot-ji-cheng-quartz-zi-ding-yi-biao-guan-li-ding-shi-qi/">
+        </link>
+        <updated>2022-06-20T03:23:22.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="前言">前言</h1>
+<blockquote>
+<p>本文章中出现的第三方框架方法：MyBatis-Plus，Hutools，Quartz。</p>
+</blockquote>
+<h1 id="1-建表">1. 建表</h1>
+<pre><code class="language-sql">CREATE TABLE `quartz_job_manager` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `job_name` varchar(255) NOT NULL COMMENT '任务名称',
+  `job_group` varchar(50) DEFAULT NULL COMMENT '任务分组',
+  `start_time` datetime DEFAULT NULL COMMENT '一次行执行时间',
+  `cron_expression` varchar(30) DEFAULT NULL COMMENT 'cron表达式',
+  `bean_class` varchar(255) DEFAULT NULL COMMENT '执行方法',
+  `job_status` int(11) DEFAULT NULL COMMENT '任务状态;0.执行 1.暂停',
+  `job_type` int(11) DEFAULT NULL COMMENT '任务类型;0.一次性任务 1.长期任务',
+  `deleted` int(11) DEFAULT NULL COMMENT '0正常,1已删除',
+  `creator_id` int(11) DEFAULT NULL COMMENT '创建用户Id',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `modifier_id` int(11) DEFAULT NULL COMMENT '修改用户id',
+  `modify_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`,`job_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3120 DEFAULT CHARSET=utf8 COMMENT='定时任务管理';
+</code></pre>
+<h1 id="2-导包">2. 导包</h1>
+<pre><code class="language-xml">&lt;dependency&gt;
+        &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;
+        &lt;artifactId&gt;quartz&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h1 id="3-添加配置文件">3. 添加配置文件</h1>
+<p>在resources下添加quartz.properties配置文件</p>
+<pre><code class="language-properties"># Default Properties file for use by StdSchedulerFactory
+# to create a Quartz Scheduler Instance, if a different
+# properties file is not explicitly specified.
+#org.quartz.scheduler.instanceName: DefaultQuartzScheduler
+#org.quartz.scheduler.rmi.export: false
+#org.quartz.scheduler.rmi.proxy: false
+#org.quartz.scheduler.wrapJobExecutionInUserTransaction: false
+#org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+org.quartz.threadPool.threadCount= 20
+#org.quartz.threadPool.threadPriority: 5
+#org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread: true
+#org.quartz.jobStore.misfireThreshold: 60000
+#org.quartz.jobStore.class: org.quartz.simpl.RAMJobStore
+</code></pre>
+<h1 id="4-添加定时器工厂类">4. 添加定时器工厂类</h1>
+<pre><code class="language-java">@Component
+public class JobFactory extends AdaptableJobFactory {
+
+    /**
+     * Job对象的实例化过程是在Quartz中进行的，这时候我们需要将spring的东西注入进来
+     */
+    @Autowired
+    private AutowireCapableBeanFactory capableBeanFactory;
+
+    @Override
+    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
+        //调用父类的方法
+        Object jobInstance = super.createJobInstance(bundle);
+        //进行注入
+        capableBeanFactory.autowireBean(jobInstance);
+        return jobInstance;
+    }
+}
+</code></pre>
+<h1 id="5-添加定时器配置">5. 添加定时器配置</h1>
+<pre><code class="language-java">@Configuration
+public class JobConfigration {
+
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean(JobFactory jobFactory) {
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        try {
+            schedulerFactoryBean.setOverwriteExistingJobs(true);
+            schedulerFactoryBean.setQuartzProperties(quartzProperties());
+            schedulerFactoryBean.setJobFactory(jobFactory);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return schedulerFactoryBean;
+    }
+
+    @Bean
+    public Properties quartzProperties() throws IOException {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        propertiesFactoryBean.setLocation(new ClassPathResource(&quot;/quartz.properties&quot;));
+        propertiesFactoryBean.afterPropertiesSet();
+        return propertiesFactoryBean.getObject();
+    }
+
+    /**
+     * 创建schedule
+     * @return Scheduler
+     */
+    @Bean(name = &quot;scheduler&quot;)
+    public Scheduler scheduler(JobFactory jobFactory) {
+        return schedulerFactoryBean(jobFactory).getScheduler();
+    }
+}
+</code></pre>
+<h1 id="6-定时任务操作类">6. 定时任务操作类</h1>
+<pre><code class="language-java">@Component
+@Slf4j
+public class JobManagerUtil {
+    @Resource
+    private Scheduler scheduler;
+
+    /**
+     * 添加任务2
+     *
+     * @param jobName        jobName
+     * @param jobGroup       jobGroup
+     * @param cronExpression cronExpression
+     * @param beanClass      beanClass
+     */
+    public void addCommonJob(String jobName, String jobGroup, String cronExpression, Class&lt;? extends Job&gt; beanClass) {
+        try {
+            // 创建jobDetail实例，绑定Job实现类 ,指明job的名称，所在组的名称，以及绑定job类
+            JobDetail jobDetail = JobBuilder.newJob(beanClass).withIdentity(jobName, jobGroup).build();
+            // 定义调度触发规则 使用 cornTrigger 规则
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup)
+                    .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
+                    .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).startNow().build();
+            // 把作业和触发器注册到任务调度中
+            scheduler.scheduleJob(jobDetail, trigger);
+            // 启动
+            if (!scheduler.isStarted()) {
+                scheduler.start();
+            }
+        } catch (Exception e) {
+            log.error(&quot;add Job error&quot;, e);
+        }
+    }
+
+    /**
+     * 添加任务3 一次性任务
+     *
+     * @param jobName   jobName
+     * @param jobGroup  jobGroup
+     * @param startTime startTime
+     * @param beanClass beanClass
+     */
+    public void addSingleCommonJob(String jobName, String jobGroup, Date startTime, Class&lt;? extends Job&gt; beanClass) {
+        try {
+            JobDetail jobDetail = JobBuilder.newJob(beanClass).withIdentity(jobName, jobGroup).build();
+            SimpleTrigger singleTrigger = TriggerBuilder.newTrigger()
+                    .withIdentity(jobName, jobGroup).startAt(startTime).withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1))
+                    .build();
+            // 把作业和触发器注册到任务调度中
+            scheduler.scheduleJob(jobDetail, singleTrigger);
+            // 启动
+            if (!scheduler.isStarted()) {
+                scheduler.start();
+            }
+        } catch (Exception e) {
+            log.error(&quot;add Job error&quot;, e);
+        }
+    }
+
+    /**
+     * 添加一个停止任务
+     * Params:
+     * jobName – jobName
+     * jobGroup – jobGroup
+     * startTime – startTime
+     * beanClass – beanClass
+     */
+    public void addCommonJobShutdown(String jobName, String jobGroup, String cronExpression, Class&lt;? extends Job&gt; beanClass) {
+        try {
+            // 创建jobDetail实例，绑定Job实现类 ,指明job的名称，所在组的名称，以及绑定job类
+            JobDetail jobDetail = JobBuilder.newJob(beanClass).withIdentity(jobName, jobGroup).build();
+            // 定义调度触发规则 使用 cornTrigger 规则
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup)
+                    .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
+                    .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).startNow().build();
+            // 把作业和触发器注册到任务调度中
+            scheduler.scheduleJob(jobDetail, trigger);
+            // 停止
+            if (scheduler.isStarted()) {
+                scheduler.shutdown();
+            }
+        } catch (Exception e) {
+            log.error(&quot;add Job error&quot;, e);
+        }
+    }
+
+    /**
+     * 暂停任务
+     */
+    public void pauseJob(String jobName, String jobGroup) {
+        JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
+        try {
+            scheduler.pauseJob(jobKey);
+        } catch (SchedulerException e) {
+            log.error(&quot;pauseJob error&quot;, e);
+        }
+    }
+
+    /**
+     * 恢复任务
+     */
+    public void resumeJob(String jobName, String jobGroup) {
+        JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
+        try {
+            scheduler.resumeJob(jobKey);
+        } catch (SchedulerException e) {
+            log.error(&quot;resumeJob error&quot;, e);
+        }
+    }
+
+    /**
+     * 删除任务
+     */
+    public void deleteJob(String jobName, String jobGroup) {
+        JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
+        try {
+            if (scheduler.checkExists(jobKey)) {
+                scheduler.deleteJob(jobKey);
+                log.debug(&quot;定时任务:{}.{}-已删除!&quot;, jobName, jobGroup);
+            }
+        } catch (SchedulerException e) {
+            log.error(&quot;delete job error&quot;, e);
+        }
+    }
+
+    /**
+     * 启动任务(将现有任务再执行一次&lt;仅执行一次并非新建了一个任务&gt;
+     */
+    public void runJobNow(String jobName, String jobGroup) {
+        JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
+        try {
+            scheduler.triggerJob(jobKey);
+        } catch (SchedulerException e) {
+            log.error(&quot;run Job now error&quot;, e);
+        }
+    }
+
+    /**
+     * 查看任务是否存在
+     */
+    public Boolean checkExists(String jobName, String jobGroup) {
+        JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
+        try {
+            return scheduler.checkExists(jobKey);
+        } catch (SchedulerException e) {
+            log.error(&quot;pauseJob error&quot;, e);
+            return false;
+        }
+    }
+
+}
+</code></pre>
+<h1 id="7-定时任务实体">7. 定时任务实体</h1>
+<pre><code class="language-java">/**
+ * 定时任务管理
+ * @TableName quartz_job_manager
+ */
+@TableName(value =&quot;quartz_job_manager&quot;)
+@Data
+public class QuartzJobManager implements Serializable {
+    /**
+     * 
+     */
+    @TableId(value = &quot;id&quot;, type = IdType.AUTO)
+    private Integer id;
+
+    /**
+     * 任务名称
+     */
+    @TableField(value = &quot;job_name&quot;)
+    private String jobName;
+
+    /**
+     * 任务分组
+     */
+    @TableField(value = &quot;job_group&quot;)
+    private String jobGroup;
+
+    /**
+     * 一次行执行时间
+     */
+    @TableField(value = &quot;start_time&quot;)
+    private Date startTime;
+
+    /**
+     * cron表达式
+     */
+    @TableField(value = &quot;cron_expression&quot;)
+    private String cronExpression;
+
+    /**
+     * 执行方法
+     */
+    @TableField(value = &quot;bean_class&quot;)
+    private String beanClass;
+
+    /**
+     * 任务状态;0.执行 1.暂停
+     */
+    @TableField(value = &quot;job_status&quot;)
+    private Integer jobStatus;
+
+    /**
+     * 任务类型;0.一次性任务 1.长期任务
+     */
+    @TableField(value = &quot;job_type&quot;)
+    private Integer jobType;
+
+    /**
+     * 0正常,1已删除
+     */
+    @TableField(value = &quot;deleted&quot;)
+    private Integer deleted;
+
+    /**
+     * 创建用户Id
+     */
+    @TableField(value = &quot;creator_id&quot;)
+    private Integer creatorId;
+
+    /**
+     * 创建时间
+     */
+    @TableField(value = &quot;create_time&quot;)
+    private Date createTime;
+
+    /**
+     * 修改用户id
+     */
+    @TableField(value = &quot;modifier_id&quot;)
+    private Integer modifierId;
+
+    /**
+     * 修改时间
+     */
+    @TableField(value = &quot;modify_time&quot;)
+    private Date modifyTime;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+}
+</code></pre>
+<h2 id="71-任务操作类型枚举">7.1. 任务操作类型枚举</h2>
+<h3 id="711-任务状态枚举">7.1.1. 任务状态枚举</h3>
+<pre><code class="language-java">/**
+ * 任务状态枚举
+ * @author Elex
+ * @date 2022-06-10 17:16
+ */
+@Getter
+@AllArgsConstructor
+public enum JobStatusEnum {
+
+    NORMAL(0,&quot;正常&quot;),
+
+    PAUSE(1,&quot;暂停&quot;);
+
+
+    /**
+     * code编码
+     */
+    private Integer code;
+    /**
+     * 中文信息描述
+     */
+    private String desc;
+
+    public static String reversal(Integer code) {
+        return EnumUtil.getBy(JobStatusEnum.class, key -&gt; key.getCode().equals(code)).getDesc();
+    }
+
+}
+</code></pre>
+<h3 id="712-任务状态枚举">7.1.2. 任务状态枚举</h3>
+<pre><code class="language-java">/** 
+ * 任务状态枚举
+ * 
+ * @author Elex
+ * @date 2022-06-10 16:57
+ */
+@Getter
+@AllArgsConstructor
+public enum JobTaskEnum {
+    RUN(0, &quot;运行&quot;),
+    PAUSE(1, &quot;暂停&quot;),
+    RECOVER(2, &quot;恢复&quot;);
+
+    /**
+     * code编码
+     */
+    private Integer code;
+    /**
+     * 中文信息描述
+     */
+    private String desc;
+
+
+
+    public static String reversal(Integer code) {
+        return EnumUtil.getBy(JobTaskEnum.class, key -&gt; key.getCode().equals(code)).getDesc();
+    }
+
+}
+</code></pre>
+<h3 id="713-任务类型枚举">7.1.3. 任务类型枚举</h3>
+<pre><code class="language-java">/**
+ * 任务类型枚举
+ * 
+ * @author Elex
+ * @date 2022-06-10 17:23
+ */
+@Getter
+@AllArgsConstructor
+public enum JobTypeEnum {
+    ONE_OFF_TASK(0,&quot;一次性任务&quot;),
+
+    PERSISTENT_TASK(1,&quot;持久性任务&quot;);
+
+
+    /**
+     * code编码
+     */
+    private Integer code;
+    /**
+     * 中文信息描述
+     */
+    private String desc;
+
+
+}
+</code></pre>
+<h1 id="8-定时任务操作接口">8. 定时任务操作接口</h1>
+<h2 id="81-定时任务操作接口类">8.1. 定时任务操作接口类</h2>
+<pre><code class="language-java">/**
+* @author Elex
+* @description 针对表【quartz_job_manager(定时任务管理)】的数据库操作Service
+* @createDate 2022-06-10 18:45:58
+*/
+public interface QuartzJobManagerService extends IService&lt;QuartzJobManager&gt; {
+
+    /**
+     * 保存任务
+     *
+     * @author Elex
+     * @date 2022/6/10 17:01
+     * @param job
+     * @return com.shiyue.ticket.po.QuartzJobManager
+     */
+    QuartzJobManager saveJobManager(QuartzJobManager job);
+
+    /**
+     * 任务操作
+     *
+     * @author Elex
+     * @date 2022/6/10 17:01
+     * @param operation
+     * @param id
+     * @return java.lang.Boolean
+     */
+    Boolean taskOperation(Integer operation, Integer id);
+
+    /**
+     * 删除任务
+     *
+     * @author Elex
+     * @date 2022/6/10 17:01
+     * @param ids
+     * @return java.lang.Boolean
+     */
+    Boolean deleteById(List&lt;Integer&gt; ids);
+
+    /**
+     * 删除任务根据任务名称
+     *
+     * @author Elex
+     * @date 2022/6/12 11:04
+     * @param jobName
+     * @return java.lang.Boolean
+     */
+    Boolean deleteByJobName(String jobName, String jobGroup);
+
+    /**
+     * 初始化任务
+     *
+     * @author Elex
+     * @date 2022/6/10 17:01
+     * @return java.lang.Boolean
+     */
+    Boolean initJob();
+}
+</code></pre>
+<h2 id="82-定时任务操作接口实现类">8.2. 定时任务操作接口实现类</h2>
+<pre><code class="language-java">/**
+* @author Elex
+* @description 针对表【quartz_job_manager(定时任务管理)】的数据库操作Service实现
+* @createDate 2022-06-10 18:45:58
+*/
+@Service
+public class QuartzJobManagerServiceImpl extends ServiceImpl&lt;QuartzJobManagerMapper, QuartzJobManager&gt;
+    implements QuartzJobManagerService {
+    @Autowired
+    private JobManagerUtil jobManagerUtil;
+
+    private Map&lt;String, BiConsumer&lt;String, String&gt;&gt; taskOperationMap = new HashMap&lt;&gt;();
+
+    @PostConstruct
+    void init() {
+        taskOperationMap.put(JobTaskEnum.RUN.getDesc(), (jobName, jobGroup) -&gt; jobManagerUtil.runJobNow(jobName, jobGroup));
+        taskOperationMap.put(JobTaskEnum.PAUSE.getDesc(), (jobName, jobGroup) -&gt; jobManagerUtil.pauseJob(jobName, jobGroup));
+        taskOperationMap.put(JobTaskEnum.RECOVER.getDesc(), (jobName, jobGroup) -&gt; jobManagerUtil.resumeJob(jobName, jobGroup));
+    }
+
+    @SneakyThrows
+    @Override
+    public QuartzJobManager saveJobManager(QuartzJobManager jobManager) {
+        long count = count(Wrappers.&lt;QuartzJobManager&gt;lambdaQuery()
+                .eq(QuartzJobManager::getJobName, jobManager.getJobName()).eq(QuartzJobManager::getDeleted, BigDecimal.ZERO.toString()));
+        if (count &gt; 0) {
+            throw new RuntimeException(&quot;定时任务名称已存在&quot;);
+        }
+        jobManager.setDeleted(0);
+        jobManager.setJobStatus(JobStatusEnum.NORMAL.getCode());
+        save(jobManager);
+        if (jobManager.getJobType().equals(JobTypeEnum.ONE_OFF_TASK.getCode())) {
+            jobManagerUtil.addSingleCommonJob(jobManager.getJobName(), jobManager.getJobGroup(), jobManager.getStartTime(), (Class&lt;? extends Job&gt;) Class.forName(jobManager.getBeanClass()));
+        } else {
+            jobManagerUtil.addCommonJob(jobManager.getJobName(), jobManager.getJobGroup(), jobManager.getCronExpression(), (Class&lt;? extends Job&gt;) Class.forName(jobManager.getBeanClass()));
+        }
+        return jobManager;
+    }
+
+    @Override
+    public Boolean taskOperation(Integer operation, Integer id) {
+        QuartzJobManager byId = getById(id);
+        taskOperationVerify(operation, byId);
+        String reversal = JobTaskEnum.reversal(operation);
+        BiConsumer&lt;String, String&gt; stringStringBiConsumer = taskOperationMap.get(reversal);
+        stringStringBiConsumer.accept(byId.getJobName(), byId.getJobGroup());
+        byId.setJobStatus(operationToStatus(reversal));
+        save(byId);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteById(List&lt;Integer&gt; ids) {
+        Assert.notEmpty(ids, &quot;ids不能为空&quot;);
+        ids.parallelStream().forEach(i -&gt; {
+            QuartzJobManager byId = getById(i);
+            if (Objects.nonNull(byId)) {
+                byId.setDeleted(1);
+                saveOrUpdate(byId);
+                jobManagerUtil.deleteJob(byId.getJobName(), byId.getJobGroup());
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public Boolean deleteByJobName(String jobName, String jobGroup) {
+        if (StrUtil.isEmpty(jobName) || StrUtil.isEmpty(jobGroup)) {
+            throw new RuntimeException(&quot;任务分组不能为空&quot;);
+        }
+        QuartzJobManager one = getOne(Wrappers.&lt;QuartzJobManager&gt;lambdaQuery()
+                .eq(QuartzJobManager::getJobName, jobName)
+                .eq(QuartzJobManager::getJobGroup, jobGroup)
+                .eq(QuartzJobManager::getDeleted, BigDecimal.ZERO.toString()));
+        if (Objects.nonNull(one)) {
+            one.setDeleted(1);
+            saveOrUpdate(one);
+            jobManagerUtil.deleteJob(one.getJobName(), one.getJobGroup());
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean initJob() {
+        List&lt;QuartzJobManager&gt; byDeletedAndStartTimeAfter = list(Wrappers.&lt;QuartzJobManager&gt;lambdaQuery()
+                .eq(QuartzJobManager::getDeleted, BigDecimal.ZERO.toString())
+                .or(wrapper -&gt; wrapper.
+                        eq(QuartzJobManager::getJobType, BigDecimal.ZERO.toString()).
+                        gt(QuartzJobManager::getStartTime, DateUtil.now())
+                        .eq(QuartzJobManager::getDeleted, BigDecimal.ZERO.toString())));
+        byDeletedAndStartTimeAfter.parallelStream().forEach(i -&gt; {
+            try {
+                if (i.getJobType().equals(JobTypeEnum.ONE_OFF_TASK.getCode())) {
+                    jobManagerUtil.addSingleCommonJob(i.getJobName(), i.getJobGroup(), i.getStartTime(), (Class&lt;? extends Job&gt;) Class.forName(i.getBeanClass()));
+                } else {
+                    if (i.getJobStatus().equals(JobStatusEnum.NORMAL.getCode())) {
+                        jobManagerUtil.addCommonJob(i.getJobName(), i.getJobGroup(), i.getCronExpression(), (Class&lt;? extends Job&gt;) Class.forName(i.getBeanClass()));
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                log.error(&quot;获取BeanClass错误:&quot;, e);
+            }
+        });
+        return true;
+    }
+
+    private Integer operationToStatus(String jobTaskEnum) {
+        if (StrUtil.equals(jobTaskEnum,JobTaskEnum.PAUSE.getDesc())) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private void taskOperationVerify(Integer operation, QuartzJobManager jobManager) {
+        if (jobManager.getJobStatus().equals(JobStatusEnum.NORMAL.getCode())) {
+            if (operation.equals(2)) {
+                throw new RuntimeException(&quot;任务正常状态下,无法使用恢复&quot;);
+            }
+        } else {
+            if (operation.equals(1)) {
+                throw new RuntimeException(&quot;任务暂停状态下,无法使用暂停&quot;);
+            }
+        }
+    }
+}
+</code></pre>
+<h1 id="9-启动初始化加载任务">9. 启动初始化加载任务</h1>
+<pre><code class="language-java">/**
+ * 初始化加载内部的job
+ * @author Elex
+ */
+@Component
+public class JobApplicationRunner implements ApplicationRunner {
+
+    @Autowired
+    private JobManagerSreviceb jobManagerSrevice;
+
+    @Override
+    public void run(ApplicationArguments var1) throws Exception {
+        jobManagerSrevice.ininJob();
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[java面试题之HashMap常见面试题总结]]></title>
+        <id>https://blog.elex.vip/post/java-mian-shi-ti-zhi-hashmap-chang-jian-mian-shi-ti-zong-jie/</id>
+        <link href="https://blog.elex.vip/post/java-mian-shi-ti-zhi-hashmap-chang-jian-mian-shi-ti-zong-jie/">
+        </link>
+        <updated>2022-03-23T05:32:09.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="你用过hashmap吗-什么是hashmap你为什么用到它">“你用过HashMap吗？” “什么是HashMap？你为什么用到它？”</h2>
+<p>几乎每个人都会回答“是的”，然后回答HashMap的一些特性，譬如HashMap可以接受null键值和值，而Hashtable则不能；HashMap是非synchronized;HashMap很快；以及HashMap储存的是键值对等等。这显示出你已经用过HashMap，而且对它相当的熟悉。但是面试官来个急转直下，从此刻开始问出一些刁钻的问题，关于HashMap的更多基础的细节。面试官可能会问出下面的问题：</p>
+<h2 id="你知道hashmap的工作原理吗-你知道hashmap的get方法的工作原理吗">“你知道HashMap的工作原理吗？” “你知道HashMap的get()方法的工作原理吗？”</h2>
+<p>HashMap是基于hashing的原理，我们使用put(key, value)存储对象到HashMap中，使用get(key)从HashMap中获取对象。当我们给put()方法传递键和值时，我们先对键调用hashCode()方法，返回的hashCode用于找到bucket位置来储存Entry对象。”这里关键点在于指出，HashMap是在bucket中储存键对象和值对象，作为Map.Entry。这一点有助于理解获取对象的逻辑。如果你没有意识到这一点，或者错误的认为仅仅只在bucket中存储值的话，你将不会回答如何从HashMap中获取对象的逻辑。这个答案相当的正确，也显示出面试者确实知道hashing以及HashMap的工作原理。</p>
+<h2 id="当两个对象的hashcode相同会发生什么">“当两个对象的hashcode相同会发生什么？”</h2>
+<p>从这里开始，真正的困惑开始了，一些面试者会回答因为hashcode相同，所以两个对象是相等的，HashMap将会抛出异常，或者不会存储它们。然后面试官可能会提醒他们有equals()和hashCode()两个方法，并告诉他们两个对象就算hashcode相同，但是它们可能并不相等。一些面试者可能就此放弃，而另外一些还能继续挺进，他们回答“因为hashcode相同，所以它们的bucket位置相同，‘碰撞’会发生。因为HashMap使用链表存储对象，这个Entry(包含有键值对的Map.Entry对象)会存储在链表中。”这个答案非常的合理，虽然有很多种处理碰撞的方法，这种方法是最简单的，也正是HashMap的处理方法。但故事还没有完结，面试官会继续问：</p>
+<h2 id="如果两个键的hashcode相同你如何获取值对象">“如果两个键的hashcode相同，你如何获取值对象？”</h2>
+<p>面试者会回答：当我们调用get()方法，HashMap会使用键对象的hashcode找到bucket位置，然后获取值对象。面试官提醒他如果有两个值对象储存在同一个bucket，他给出答案:将会遍历链表直到找到值对象。面试官会问因为你并没有值对象去比较，你是如何确定确定找到值对象的？除非面试者直到HashMap在链表中存储的是键值对，否则他们不可能回答出这一题。其中一些记得这个重要知识点的面试者会说，找到bucket位置之后，会调用keys.equals()方法去找到链表中正确的节点，最终找到要找的值对象。完美的答案！许多情况下，面试者会在这个环节中出错，因为他们混淆了hashCode()和equals()方法。因为在此之前hashCode()屡屡出现，而equals()方法仅仅在获取值对象的时候才出现。一些优秀的开发者会指出使用不可变的、声明作final的对象，并且采用合适的equals()和hashCode()方法的话，将会减少碰撞的发生，提高效率。不可变性使得能够缓存不同键的hashcode，这将提高整个获取对象的速度，使用String，Interger这样的wrapper类作为键是非常好的选择。如果你认为到这里已经完结了，那么听到下面这个问题的时候，你会大吃一惊。</p>
+<h2 id="如果hashmap的大小超过了负载因子load-factor定义的容量怎么办">“如果HashMap的大小超过了负载因子(load factor)定义的容量，怎么办？”</h2>
+<p>除非你真正知道HashMap的工作原理，否则你将回答不出这道题。默认的负载因子大小为0.75，也就是说，当一个map填满了75%的bucket时候，和其它集合类(如ArrayList等)一样，将会创建原来HashMap大小的两倍的bucket数组，来重新调整map的大小，并将原来的对象放入新的bucket数组中。这个过程叫作rehashing，因为它调用hash方法找到新的bucket位置。如果你能够回答这道问题，下面的问题来了：</p>
+<h2 id="你了解重新调整hashmap大小存在什么问题吗">“你了解重新调整HashMap大小存在什么问题吗？”</h2>
+<p>你可能回答不上来，这时面试官会提醒你当多线程的情况下，可能产生条件竞争(race condition)。当重新调整HashMap大小的时候，确实存在条件竞争，因为如果两个线程都发现HashMap需要重新调整大小了，它们会同时试着调整大小。在调整大小的过程中，存储在链表中的元素的次序会反过来，因为移动到新的bucket位置的时候，HashMap并不会将元素放在链表的尾部，而是放在头部，这是为了避免尾部遍历(tail traversing)。如果条件竞争发生了，那么就死循环了。这个时候，你可以质问面试官，为什么这么奇怪，要在多线程的环境下使用HashMap呢？：）</p>
+<h2 id="为什么string-interger这样的wrapper类适合作为键">“为什么String, Interger这样的wrapper类适合作为键？”</h2>
+<p>String, Interger这样的wrapper类作为HashMap的键是再适合不过了，而且String最为常用。因为String是不可变的，也是final的，而且已经重写了equals()和hashCode()方法了。其他的wrapper类也有这个特点。不可变性是必要的，因为为了要计算hashCode()，就要防止键值改变，如果键值在放入时和获取时返回不同的hashcode的话，那么就不能从HashMap中找到你想要的对象。不可变性还有其他的优点如线程安全。如果你可以仅仅通过将某个field声明成final就能保证hashCode是不变的，那么请这么做吧。因为获取对象的时候要用到equals()和hashCode()方法，那么键对象正确的重写这两个方法是非常重要的。如果两个不相等的对象返回不同的hashcode的话，那么碰撞的几率就会小些，这样就能提高HashMap的性能。 “我们可以使用自定义的对象作为键吗？ ”这是前一个问题的延伸。当然你可能使用任何对象作为键，只要它遵守了equals()和hashCode()方法的定义规则，并且当对象插入到Map中之后将不会再改变了。如果这个自定义对象时不可变的，那么它已经满足了作为键的条件，因为当它创建之后就已经不能改变了。</p>
+<h2 id="我们可以使用cocurrenthashmap来代替hashtable吗">“我们可以使用CocurrentHashMap来代替Hashtable吗？”</h2>
+<p>这是另外一个很热门的面试题，因为ConcurrentHashMap越来越多人用了。我们知道Hashtable是synchronized的，但是ConcurrentHashMap同步性能更好，因为它仅仅根据同步级别对map的一部分进行上锁。ConcurrentHashMap当然可以代替HashTable，但是HashTable提供更强的线程安全性。</p>
+<p>这些问题设计哪些知识点：</p>
+<p>hashing的概念<br>
+HashMap中解决碰撞的方法<br>
+equals()和hashCode()的应用，以及它们在HashMap中的重要性<br>
+不可变对象的好处<br>
+HashMap多线程的条件竞争<br>
+重新调整HashMap的大小</p>
+<h2 id="为什么hashmap中的键往往都使用string">“为什么HashMap中的键往往都使用String？”</h2>
+<p>1.hash（哈希，也称散列）算法：根据元素的hashCode值确定元 素的储存位置，从而快速定元素。相比于固定长度的数组，HashMap用hashCode值代替了索引值，使得HashMap的长度可 以自由增加。由于元素的hashCode值一般不会连续，所以元素的存储位置一般也不会连续，即随机存储</p>
+<p>2.HashMap的内部实现是通过key的hashcode来确定value的存储位置。</p>
+<p>3.HashMap是一种map，value应该由key唯一确定，key相同，value也应该相同，问题是，key的什么相同？值？地址？...</p>
+<p>3.1首先想到的是String对象的值，它不就很像字典中的索引。</p>
+<p>3.1.1恰巧，首先，String是不可变的，且重写了hashCode(),这使得，即使两个字符串对象的引用不同，但只要值相同，它们的hashcode就相同，就可以索引到相同的value，直接满足我们HashMap中hash和map的要求。</p>
+<p>3.1.2其次，每当创建一个字符串对象时，它的hashcode 就被缓存下来，所以在HashMap种储存时不需要再次计算,相比于其他对象更快。</p>
+<p>3.2如果key的地址（即对象的引用）呢？<br>
+<img src="https://github.com/Elex722/PicGo/blob/master/images/WechatIMG20.png?raw=true" alt="在这里插入图片描述" loading="lazy"></p>
+<p>3.2.1首先，使用没有重写hashCode（）的对象作key，这使得，只要两个对象的引用不同，它们的hashcode值就不同，想要索引出value，就必须使用储存该value时的key对象，相对于使用key的值，这样会更加严格。</p>
+<p>3.2.2其次，对象中一般不会存储该对象的hashCode值，在HashMap中储存时就得需要重新计算</p>
+<p>现在看来，仿佛冥冥之中，String与HashMap的相遇是注定的</p>
+<p><strong>总结</strong><br>
+HashMap的工作原理HashMap基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，让后找到bucket位置来储存值对象。当获取对象时，通过键对象的equals()方法找到正确的键值对，然后返回值对象。HashMap使用链表来解决碰撞问题，当发生碰撞了，对象将会储存在链表的下一个节点中。 HashMap在每个链表节点中储存键值对对象。当两个不同的键对象的hashcode相同时会发生什么？ 它们会储存在同一个bucket位置的链表中。键对象的equals()方法用来找到键值对。因为HashMap的好处非常多，在电子商务的应用中使用HashMap作为缓存。因为金融领域非常多的运用Java，也出于性能的考虑，我们会经常用到HashMap和ConcurrentHashMap。你可以查看更多的关于HashMap的文章:</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BigDecimal Postman 返回正常精度前端接收不正常（前后端交互丢失精度）]]></title>
+        <id>https://blog.elex.vip/post/bigdecimal-postman-fan-hui-zheng-chang-jing-du-qian-duan-jie-shou-bu-zheng-chang-qian-hou-duan-jiao-hu-diu-shi-jing-du/</id>
+        <link href="https://blog.elex.vip/post/bigdecimal-postman-fan-hui-zheng-chang-jing-du-qian-duan-jie-shou-bu-zheng-chang-qian-hou-duan-jiao-hu-diu-shi-jing-du/">
+        </link>
+        <updated>2022-03-23T05:27:23.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92bigdecimal%E7%B1%BB%E5%9E%8B%E5%AD%97%E6%AE%B5%E4%B8%A2%E5%A4%B1%E7%B2%BE%E5%BA%A6">前后端交互BigDecimal类型字段丢失精度</a>
+<ul>
+<li><a href="#%E4%BE%8B%E5%A6%82">例如</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">解决方案</a></li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E8%A7%A3%E9%87%8A">注解解释</a></li>
+</ul>
+</li>
+</ul>
+(BigDecimal Postman 返回正常精度前端接收不正常（前后端交互丢失精度）)</p>
+<h1 id="前后端交互bigdecimal类型字段丢失精度">前后端交互BigDecimal类型字段丢失精度</h1>
+<p>例如 postman 的返回：<br>
+<img src="https://img-blog.csdnimg.cn/20210330110546552.png" alt="在这里插入图片描述" loading="lazy"><br>
+例如 前端接收 的返回：<br>
+<img src="https://img-blog.csdnimg.cn/20210330111222296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM1MzIyMDY1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"><br>
+实体类里的字段类型：<br>
+<img src="https://img-blog.csdnimg.cn/20210330111249305.png" alt="在这里插入图片描述" loading="lazy"></p>
+<h2 id="例如">例如</h2>
+<p>该字段的值为  “ 12345671234567.12345”，到前端就变成了 “12345671234567.123”，前端要求保留所有小数。</p>
+<h2 id="解决方案">解决方案</h2>
+<p>在需要转化的字段上添加   <code>@JsonFormat(shape = JsonFormat.Shape.STRING)</code> 注解<br>
+<img src="https://img-blog.csdnimg.cn/20210330112137151.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM1MzIyMDY1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></p>
+<h2 id="注解解释">注解解释</h2>
+<p><code>@JsonFormat</code> 用来表示json序列化的一种格式或者类型，shap表示序列化后的一种类型</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java-Poi 指定列单元格式]]></title>
+        <id>https://blog.elex.vip/post/java-poi-zhi-ding-lie-dan-yuan-ge-shi/</id>
+        <link href="https://blog.elex.vip/post/java-poi-zhi-ding-lie-dan-yuan-ge-shi/">
+        </link>
+        <updated>2022-03-23T05:17:40.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#poi%E5%AF%BC%E5%87%BA%E8%AE%BE%E7%BD%AE%E6%9F%90%E5%88%97%E5%80%BC%E4%B8%BA%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F">POI导出设置某列值为文本格式</a>
+<ul>
+<li><a href="#hssfworkbook%E6%96%B9%E5%BC%8F">HSSFWorkbook方式</a></li>
+<li><a href="#xssfworkbook%E6%96%B9%E5%BC%8F">XSSFWorkbook方式</a></li>
+</ul>
+</li>
+</ul>
+( Java-Poi 指定列单元格式)</p>
+<h1 id="poi导出设置某列值为文本格式">POI导出设置某列值为文本格式</h1>
+<h2 id="hssfworkbook方式">HSSFWorkbook方式</h2>
+<pre><code class="language-java">// 设置单元格格式为文本格式
+HSSFCellStyle textStyle = workBook.createCellStyle();
+HSSFDataFormat format = workBook.createDataFormat();
+//设置单元格格式为&quot;文本&quot;
+textStyle.setDataFormat(format.getFormat(&quot;@&quot;));
+sheet.setDefaultColumnStyle(6, textStyle);
+</code></pre>
+<h2 id="xssfworkbook方式">XSSFWorkbook方式</h2>
+<pre><code class="language-java">// 设置单元格格式为文本格式
+XSSFCellStyle css = (XSSFCellStyle) workbook.createCellStyle();
+XSSFDataFormat format = (XSSFDataFormat) workbook.createDataFormat();
+//设置单元格格式为&quot;文本&quot;
+css.setDataFormat(format.getFormat(&quot;@&quot;));
+sheet.setDefaultColumnStyle(6, css);
+</code></pre>
+<p>poi的jar包版本：3.10</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Sql Server + Mybatis-plus使用Page时报错]]></title>
+        <id>https://blog.elex.vip/post/sql-server-mybatis-plus-shi-yong-page-shi-bao-cuo/</id>
+        <link href="https://blog.elex.vip/post/sql-server-mybatis-plus-shi-yong-page-shi-bao-cuo/">
+        </link>
+        <updated>2022-03-23T05:10:05.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#offset%E9%99%84%E8%BF%91%E6%9C%89%E8%AF%AD%E6%B3%95%E9%94%99%E8%AF%AF">“OFFSET”附近有语法错误</a>
+<ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">代码实现</a></li>
+<li><a href="#%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF">错误信息</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B">解决过程</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%BD%8D%E9%97%AE%E9%A2%98">定位问题</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+(Sql Server + Mybatis-plus使用Page时报错：)</p>
+<h1 id="offset附近有语法错误">“OFFSET”附近有语法错误</h1>
+<p>最近开发遇到的问题，SqlServer+Mybatis-Plus Page插件进行分页时的报错<br>
+<img src="https://img-blog.csdnimg.cn/20210520163738338.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM1MzIyMDY1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></p>
+<h2 id="代码实现">代码实现</h2>
+<p>Maven依赖</p>
+<pre><code class="language-java">&lt;!-- mybatis-plus --&gt;
+&lt;dependency&gt;
+	&lt;groupId&gt;com.baomidou&lt;/groupId&gt;
+	&lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;
+	&lt;version&gt;${mybatis-plus.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Mapper.xml</p>
+<pre><code class="language-java">SELECT 
+	zp1.[DESCRIPTION] AS [STATUS_NAME],
+    ds.[STATUS_DATE],
+    cu.[USER_NAME],
+    ds.[REMARK]
+FROM [DEPOSIT_STATUS] AS ds
+    LEFT JOIN [ZA_P_1] AS zp1 ON zp1.[CODE]= ds.[STATUS_CODE]
+    LEFT JOIN [CLIENT_USER] AS cu ON cu.[USER_ID]= ds.[CREATE_USERID]
+WHERE
+    ds.[DELETE_DATE] IS NULL
+    AND ds.[DEPOSIT_ID] = #{vo.depositId,jdbcType=INTEGER}
+ORDER BY ds.[LAST_COMMIT_DATE]
+</code></pre>
+<h2 id="错误信息">错误信息</h2>
+<pre><code class="language-java">Error querying database.  Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 除非另外还指定了 TOP、OFFSET 或 FOR XML，否则，ORDER BY 子句在视图、内联函数、派生表、子查询和公用表表达式中无效。
+</code></pre>
+<h2 id="解决过程">解决过程</h2>
+<h3 id="定位问题">定位问题</h3>
+<p>找到报错的sql</p>
+<pre><code class="language-java">SELECT 
+	zp1.[DESCRIPTION] AS [STATUS_NAME],
+    ds.[STATUS_DATE],
+    cu.[USER_NAME],
+    ds.[REMARK]
+FROM [DEPOSIT_STATUS] AS ds
+    LEFT JOIN [ZA_P_1] AS zp1 ON zp1.[CODE]= ds.[STATUS_CODE]
+    LEFT JOIN [CLIENT_USER] AS cu ON cu.[USER_ID]= ds.[CREATE_USERID]
+WHERE
+    ds.[DELETE_DATE] IS NULL
+    AND ds.[DEPOSIT_ID] = #{vo.depositId,jdbcType=INTEGER}
+ORDER BY ds.[LAST_COMMIT_DATE]
+</code></pre>
+<p>控制显示的一句异常信息</p>
+<pre><code class="language-java">WARN    at com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor.concatOrderBy(PaginationInterceptor.java:142)- failed to concat orderBy from IPage, exception=null
+</code></pre>
+<p>进入com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor.java,在concatOrderBy打上断点<br>
+在执行该句代码时异常：</p>
+<pre><code class="language-java">Select selectStatement = (Select)CCJSqlParserUtil.parse(originalSql);
+</code></pre>
+<p>在控制台debug监视CCJSqlParserUtil.parse(originalSql)，直接抛出异常，是sql语句的问题</p>
+<h3 id="解决方案">解决方案</h3>
+<p>去掉mapper.xml中sql的中括号</p>
+<pre><code class="language-java">SELECT zp1.DESCRIPTION AS STATUS_NAME,
+       ds.STATUS_DATE,
+       cu.USER_NAME,
+       ds.REMARK
+FROM DEPOSIT_STATUS AS ds
+         LEFT JOIN ZA_P_1 AS zp1 ON zp1.CODE= ds.STATUS_CODE
+    AND TYPE= 11
+         LEFT JOIN CLIENT_USER AS cu ON cu.USER_ID= ds.CREATE_USERID
+WHERE
+    ds.DELETE_DATE IS NULL
+  AND ds.DEPOSIT_ID = #{vo.depositId,jdbcType=INTEGER}
+  AND ds.CLIENT_ID = #{vo.clientId,jdbcType=INTEGER}
+ORDER BY ds.LAST_COMMIT_DATE
+</code></pre>
+<p>去掉后成功运行，CCJSqlParserUtil.parse(originalSql)不报错。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[一个对象中有很多属性，假如有个属性不想在日志中打印，其他属性都打印]]></title>
+        <id>https://blog.elex.vip/post/yi-ge-dui-xiang-zhong-you-hen-duo-shu-xing-jia-ru-you-ge-shu-xing-bu-xiang-zai-ri-zhi-zhong-da-yin-qi-ta-shu-xing-du-da-yin/</id>
+        <link href="https://blog.elex.vip/post/yi-ge-dui-xiang-zhong-you-hen-duo-shu-xing-jia-ru-you-ge-shu-xing-bu-xiang-zai-ri-zhi-zhong-da-yin-qi-ta-shu-xing-du-da-yin/">
+        </link>
+        <updated>2022-03-23T03:27:02.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#%E9%97%AE%E9%A2%98%E7%94%B1%E6%9D%A5">问题由来</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">解决方案</a>
+<ul>
+<li><a href="#lombok%E4%B8%BB%E8%A6%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3%E6%9C%89">Lombok主要常用的注解有：</a></li>
+<li><a href="#%E8%AF%B4%E6%98%8E">说明</a></li>
+</ul>
+</li>
+</ul>
+(一个对象中有很多属性，假如有个属性不想在日志中打印，其他属性都打印)</p>
+<h1 id="问题由来">问题由来</h1>
+<p>最近朋友在群里提了这么一个问题，另外一个朋友回了一句重写toString()?<br>
+这确实是一个方法，不过不太方便！<br>
+<img src="https://img-blog.csdnimg.cn/20210521174213174.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM1MzIyMDY1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></p>
+<h1 id="解决方案">解决方案</h1>
+<p>这个问题，记得在一次机缘巧合之下在一篇讲lombok工具包的时候，有提到过。</p>
+<p><mark>@ToString(exclude=&quot;column&quot;)</mark></p>
+<p>意义：排除column列所对应的元素，即在生成toString方法时不包含column参数；</p>
+<p><mark>@ToString(exclude={&quot;column1&quot;,&quot;column2&quot;})</mark></p>
+<p>意义：排除多个column列所对应的元素，其中间用英文状态下的逗号进行分割，即在生成toString方法时不包含多个column参数；</p>
+<p><mark>@ToString(of=&quot;column&quot;)</mark></p>
+<p>意义：只生成包含column列所对应的元素的参数的toString方法，即在生成toString方法时只包含column参数；；</p>
+<p><mark>@ToString(of={&quot;column1&quot;,&quot;column2&quot;})</mark></p>
+<p>意义：只生成包含多个column列所对应的元素的参数的toString方法，其中间用英文状态下的逗号进行分割，即在生成toString方法时只包含多个column参数；</p>
+<p>下面继续普及下lombok所有注解的说明，顺带巩固下自己的记忆</p>
+<h2 id="lombok主要常用的注解有">Lombok主要常用的注解有：</h2>
+<p>@Data,@getter,@setter,@NoArgsConstructor,@AllArgsConstructor,@ToString,@EqualsAndHashCode,@Slf4j,@Log4j。我们一个一个来看：</p>
+<h2 id="说明">说明</h2>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Data</td>
+<td>在JavaBean或类JavaBean中使用，这个注解包含范围最广，它包含getter、setter、NoArgsConstructor、equals、canEqual、hashCode、toString 注解，即当使用当前注解时，会自动生成包含的所有方法；</td>
+</tr>
+<tr>
+<td>@getter</td>
+<td>在JavaBean或类JavaBean中使用，使用此注解会生成对应的getter方法；</td>
+</tr>
+<tr>
+<td>@setter</td>
+<td>在JavaBean或类JavaBean中使用，使用此注解会生成对应的setter方法；</td>
+</tr>
+<tr>
+<td>@NoArgsConstructor</td>
+<td>在JavaBean或类JavaBean中使用，使用此注解会生成对应的无参构造方法；</td>
+</tr>
+<tr>
+<td>@AllArgsConstructor</td>
+<td>在JavaBean或类JavaBean中使用，使用此注解会生成对应的有参构造方法；</td>
+</tr>
+<tr>
+<td>@ToString</td>
+<td>在JavaBean或类JavaBean中使用，使用此注解会自动重写对应的toStirng方法；</td>
+</tr>
+<tr>
+<td>@EqualsAndHashCode</td>
+<td>在JavaBean或类JavaBean中使用，使用此注解会自动重写对应的equals方法和hashCode方法；</td>
+</tr>
+<tr>
+<td>@Slf4j</td>
+<td>在需要打印日志的类中使用，当项目中使用了slf4j打印日志框架时使用该注解，会简化日志的打印流程，只需调用info方法即可；</td>
+</tr>
+<tr>
+<td>@Log4j</td>
+<td>在需要打印日志的类中使用，当项目中使用了log4j打印日志框架时使用该注解，会简化日志的打印流程，只需调用info方法即可；</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[docker 安装Jenkins自动部署SpringBoot项目及所遇到的问题集合]]></title>
+        <id>https://blog.elex.vip/post/docker-an-zhuang-jenkins-zi-dong-bu-shu-springboot-xiang-mu-ji-suo-yu-dao-de-wen-ti-ji-he/</id>
+        <link href="https://blog.elex.vip/post/docker-an-zhuang-jenkins-zi-dong-bu-shu-springboot-xiang-mu-ji-suo-yu-dao-de-wen-ti-ji-he/">
+        </link>
+        <updated>2022-03-22T07:50:05.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="docker安装jenkins场景">docker安装Jenkins场景：</h1>
+<font color=#999AAA >
+安装了以下服务
+<ul>
+<li>jdk1.8（非docker容器安装）</li>
+<li>maven3.6.3 （非docker容器安装）</li>
+<li>docker</li>
+<li>nginx（docker容器部署）</li>
+<li>mysql（docker容器部署）</li>
+<li>redis（docker容器部署）<br>
+</font></li>
+</ul>
+<h1 id="开始安装jenkins">开始安装Jenkins：</h1>
+<ol>
+<li>启动docker，通过docker下载Jenkins镜像文件</li>
+</ol>
+<pre><code class="language-bash">docker pull jenkins/jenkins:latest
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/img_convert/eb72e0c4b28ac6f1daff510d61234e8a.png#pic_center" alt="在这里插入图片描述" loading="lazy"></figure>
+<ol start="2">
+<li>创建Jenkins挂载目录并授权权限（我们在服务器上先创建一个jenkins工作目录 /var/jenkins_mount，赋予相应权限，稍后我们将jenkins容器目录挂载到这个目录上，这样我们就可以很方便地对容器内的配置文件进行修改。 如果我们不这样做，那么如果需要修改容器配置文件，将会有点麻烦，因为虽然我们可以使用docker exec -it --user root 容器id /bin/bash 命令进入容器目录，但是连简单的 vi命令都不能使用）</li>
+</ol>
+<pre><code class="language-bash">mkdir -p /var/jenkins_mount
+</code></pre>
+<pre><code class="language-bash">chmod 777 /var/jenkins_mount
+</code></pre>
+<ol start="3">
+<li>创建并启动Jenkins容器<br>
+-d   后台运行镜像<br>
+-p   8081:8081  将镜像的8081端口映射到服务器的8081端口（后面服务部署用到的端口。docker容器部署，需要把部署项目的端口映射出来）<br>
+-p   10240:8080  将镜像的8080端口映射到服务器的10240端口<br>
+-p   10241:50000  将镜像的50000端口映射到服务器的10241端口<br>
+-v   /var/jenkins_mount:/var/jenkins_mount  /var/jenkins_home目录为容器jenkins工作目录，我们将硬盘上的一个目录挂载到这个位置，方便后续更新镜像后继续使用原来的工作目录。这里我们设置的就是上面我们创建的 /var/jenkins_mount目录<br>
+-v   /etc/localtime:/etc/localtime 让容器使用和服务器同样的时间设置<br>
+-v   /usr/java/default:/opt/java/openjdk  让容器可以使用服务器的jdk<br>
+-v   /usr/local/apache-maven-3.6.3:/usr/local/maven   让容器可以使用服务器的Maven<br>
+-v   /home/shiyue-ticket/logs/:/home/shiyue-ticket/logs/   将项目的日志目录挂载道到本地硬盘<br>
+-v   root   给容器root的权限<br>
+--name   jenkins   给容器起一个别名</li>
+</ol>
+<pre><code class="language-bash">docker run -d -p 8081:8081 -p 10240:8080 -p 10241:50000 -v /var/jenkins_mount:/var/jenkins_home -v /etc/localtime:/etc/localtime -v /usr/java/default:/opt/java/openjdk -v /usr/local/apache-maven-3.6.3:/usr/local/maven -v /home/shiyue-ticket/logs/:/home/shiyue-ticket/logs/  --name jenkins -u root jenkins/jenkins
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://img-blog.csdnimg.cn/be99f1939edc478c8b4e114560dfec1e.png#pic_center" alt="在这里插入图片描述" loading="lazy"></figure>
+<ol start="4">
+<li>查看jenkins是否启动成功，如下图出现端口号，就为启动成功了</li>
+</ol>
+<pre><code class="language-bash">docker ps -l
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://img-blog.csdnimg.cn/1ffa6654ee3d4718b32fcba4ee77a4b7.png#pic_center" alt="在这里插入图片描述" loading="lazy"></figure>
+<ol start="5">
+<li>查看docker容器日志</li>
+</ol>
+<pre><code class="language-bash">docker logs jenkins
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://img-blog.csdnimg.cn/cfa88a461d0c4b748162226595efe038.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAUG9vciBXcmV0Y2jCsA==,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" loading="lazy"></figure>
+<ol start="6">
+<li>配置镜像加速，进入<code>/var/jenkins_mount/</code>目录</li>
+</ol>
+<pre><code class="language-bash">cd /var/jenkins_mount/
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/b910aa7ec31e43dbb572eea540b7307d.png#pic_center" alt="在这里插入图片描述" loading="lazy"><br>
+**修改<code>hudson.model.UpdateCenter.xml</code>里的内容</p>
+<p>修改前**<br>
+<img src="https://img-blog.csdnimg.cn/31d250a7af9f4b22bf7809510fe7cd27.png#pic_center" alt="在这里插入图片描述" loading="lazy"></p>
+<p>将 url 修改为 清华大学官方镜像：https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</p>
+<p><strong>修改后</strong><br>
+<img src="https://img-blog.csdnimg.cn/9615a28a5a964fa8a5f80473dea1cce0.png#pic_center" alt="在这里插入图片描述" loading="lazy"></p>
+<ol start="7">
+<li>
+<p>访问Jenkins页面，输入你的ip加上10240<br>
+入门<br>
+<img src="https://img-blog.csdnimg.cn/img_convert/b85730023a205562da6f17c70a4a5a06.png#pic_center" alt="在这里插入图片描述" loading="lazy"></p>
+</li>
+<li>
+<p>管理员密码获取方法，查看<code>initialAdminPassword</code>文件，把密码输入登录中的密码即可，开始使用。</p>
+</li>
+</ol>
+<pre><code class="language-bash">cat /var/jenkins_mount/secrets/initialAdminPassword
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://img-blog.csdnimg.cn/5adfc6c811164fc6987c8656838b0f8b.png" alt="在这里插入图片描述" loading="lazy"></figure>
+<ol start="9">
+<li>到此就全部安装完成了</li>
+</ol>
+<h1 id="安装gitgitlab插件">安装Git，GitLab插件：</h1>
+<p>后期更新</p>
+<h1 id="问题">问题：</h1>
+<p>后期更新</p>
+]]></content>
+    </entry>
+</feed>
