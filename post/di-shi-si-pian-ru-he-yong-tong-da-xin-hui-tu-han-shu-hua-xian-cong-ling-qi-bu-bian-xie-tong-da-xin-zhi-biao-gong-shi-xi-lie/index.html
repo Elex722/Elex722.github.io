@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="内容提要：本文主要介绍了通达信指标公式常用绘图函数的第一种类型——画线函数，讲解了DRAWNULL、NODRAW、PLOYLINE、DRAWSL这四个画线函数的具体用法。
+在上一篇文章中，给大家简单介绍了通达信指标公式绘图函数的三种类型，接..." />
+    <meta name="keywords" content="TDS" />
+    <link rel="stylesheet" href="https://blog.elex.vip/media/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://blog.elex.vip/styles/main.css">
+    <!-- 代码渲染风格css -->
+    
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/default.min.css">
+    
+    <!-- 代码高亮插件 -->
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+    <!-- 代码复制插件 -->
+    <script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/clipboard.min.js"></script>
+    <!-- live2d插件 -->
+    <link rel="stylesheet" href="https://blog.elex.vip/media/css/live2d.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+    <!-- 数学公式 -->
+    
+    <title>第十四篇——如何用通达信绘图函数画线？（从零起步编写通达信指标公式系列） </title>
+
+    <!-- 大纲索引css调整 -->
+    
+    <style>
+        .markdownIt-TOC {
+            margin-left: 28%;
+            padding-left: 2px;
+            width: 80%;
+        }
+
+        .markdownIt-TOC li {
+            padding-left: 8%;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+    <div id="domainname" style="display:none">https://blog.elex.vip</div>
+    <div id="content">
+        <div>
+            <!----------- 移动端导航栏👇 ----------------->
+            <div id="bar">
+                <style>
+  .navmobile {
+    z-index: 15;
+    max-height: 40vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .navbar {
+      max-width: 100vw;
+    }
+  }
+
+  @media screen and (max-width:1200px) and (min-width: 768px) {
+    @media (min-width: 768px) {
+      .navbar-nav {
+        float: right;
+        margin: 0;
+      }
+    }
+  }
+
+  @media screen and (max-width:768px) {
+    .mbapspan {
+      padding: 0;
+    }
+  }
+</style>
+<div class="pjaxloading"  onclick="pjaxloadingClose()">
+  <div class="loadingbackground"></div>
+  <div id="loading">
+    <div class="loading">
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-inverse navbar-fixed-top navmobile">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#barmenu"
+        aria-expanded="false" id="barbutton">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a data-pjax class="navbar-brand" style="color:white" href="https://blog.elex.vip">Elex&#39;Blog&nbsp;&nbsp;|</a>
+      <span class="navbar-brand mbapspan"><i id="mbaplayer" class="fa fa-play-circle-o" aria-hidden="true"
+          style="font-size: 28px;top: 12px;position: absolute;" onclick="aplayerPlay();"></i></span>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="barmenu">
+      <ul class="nav navbar-nav">
+        
+        
+        <li>
+          <a data-pjax href="/" style="color:white">
+            首页
+          </a>
+        </li>
+        
+        
+        
+        <li>
+          <a data-pjax href="/archives" style="color:white">
+            归档
+          </a>
+        </li>
+        
+        
+        
+        <li>
+          <a data-pjax href="/tags" style="color:white">
+            标签
+          </a>
+        </li>
+        
+        
+        
+        <li>
+          <a data-pjax href="https://blog.elex.vip/post/qi-qi-guai-guai-de-yan-yu" style="color:white">
+            关于
+          </a>
+        </li>
+        
+        
+        
+        
+          
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+
+  <!-- 引入jQuery核心js文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+  <script>
+    let btstate = false;
+    var bt = $("#barbutton");
+    var bm = $("#barmenu");
+    bt.click(function () {
+      dropdown();
+    })
+    function dropdown() {
+      console.log(btstate);
+      //下拉
+      if (btstate == false) {
+        bt.removeClass("collapsed");
+        bt.attr("aria-expanded", "true");
+        bm.attr("aria-expanded", "true")
+        bm.fadeIn(700);
+        btstate = true;
+      }
+      else {
+        bt.addClass("collapsed");
+        bt.attr("aria-expanded", "false");
+        bm.removeClass("in");
+        bm.hide();
+        bm.attr("aria-expanded", "false");
+        btstate = false;
+      }
+    }
+  </script> 
+            </div>
+            <!----------- 移动端导航栏👆 ----------------->
+
+            <!--------------- pc端菜单栏👇 ---------------->
+            <div class="side"><head>
+    <link rel="stylesheet" href="https://blog.elex.vip/media/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://blog.elex.vip/styles/main.css">
+    
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/default.min.css">
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/clipboard.min.js"></script>
+    <link rel="stylesheet" href="https://blog.elex.vip/media/css/live2d.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- fancybox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+    <!--------- 数学公式👇---- -->
+    
+    <!--------- 数学公式👆----------------- -->
+    <!--------- daovocie功能👇 ------------------->
+    
+    <!--------- daovocie功能👆 ------------------->
+    <!-- -----------------twikoo评论系统引入👇 --------->
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.5.0/dist/twikoo.all.min.js"></script>
+    <!-- -----------------twikoo评论系统引入👆 --------->
+    <!---------------- leancloud api 功能依赖引入👇 -------->
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3.13.0/dist/av-min.js"></script>
+    <!---------------- leancloud api 功能依赖引入👆 -------->
+    <!------------------ valine评论系统引入👇 ------------------>
+    <script src="https://blog.elex.vip/media/js/valine.min.js"></script>
+    <!------------------ valine评论系统引入👆 ------------------>
+    <!---------------- 今日诗词api功能依赖👇 ----------------------->
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <!---------------- 今日诗词api功能依赖👆 ----------------------->
+    <!---------------- 今日诗词api功能依赖👇 ----------------------->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ispeak-bber/ispeak-bber.min.js" charset="utf-8"></script>
+    <!---------------- 哔哔功能依赖👆 ----------------------->
+
+
+</head>
+
+<style>
+    body {
+        overflow-x: hidden;
+        height: 100vh;
+        overflow-y: scroll;
+        cursor: url("https://blog.elex.vip/media/images/mouse_cursor.png"), auto
+    }
+</style>
+
+<body>
+    <!--=------ 页面加载动态画面👇 --------------->
+    <div class="pjaxloading" onclick="pjaxloadingClose()">
+        <div class="loadingbackground"></div>
+        <div id="loading-aname">
+            <div class="loading-aname">
+            </div>
+        </div>
+    </div>
+    <!--=------ 页面加载动态画面👆 --------------->
+
+    <!--------------- 左侧菜单栏👇 ------------------------>
+    
+    <div id=side>
+        <div class="r_m_div">
+            <a onclick="showAaplayer()"><i style="font-size: 20px;"><img
+                        src='https://blog.elex.vip/media/images/music.png' alt="音乐播放器" class="musicbtn"></i></a>
+        </div>
+        <div class="avatar-border">
+            <img src="https://blog.elex.vip/images/avatar.png?v=1731580342009" class="avatar">
+        </div>
+        <div class="sitename">Elex&#39;Blog</div>
+        <span class="description" data-text='["To be or not to be, that&acute;s a question."]'>&nbsp;</span>
+        <div class="siteinfocontainer">
+            <span class="siteinfo">文章</span>
+            <span class="siteinfo">标签</span>
+        </div>
+        <div class="siteinfocontainer">
+            <span class="siteinfo" id="siteinfo-postsnum"></span>
+            <span class="siteinfo">10</span>
+        </div>
+        
+        <div class="search">
+            <!-- <input type="text" class="search-input" placeholder="标题搜索(●'◡'●)" /> -->
+            <input type="text" class="search-input" placeholder="标题搜索 ⚆_⚆ つ♡">
+            <div class="search-results"></div>
+        </div>
+        
+    <div class="share-button">
+        <span>Fork me🤭</span>
+        
+        <a href="https://github.com/Elex722" target="_blank"><i style="font-size: 20px;"><img class="icon"
+                    src="https://blog.elex.vip/media/images/github.png" alt=""></i></a>
+        
+        
+        <a onclick="showqq()"><i style="font-size: 20px;"><img class="icon"
+                    src="https://blog.elex.vip/media/images/QQ.png" alt=""></i></a>
+        
+        
+        
+        
+        
+        
+        <a href="https://music.163.com/#/playlist?id=464594636" target="_blank"><i style="font-size: 20px;"><img class="icon"
+                    src="https://blog.elex.vip/media/images/wyy.png" alt=""></i></a>
+        
+        
+    </div>
+    <div id="qq" style="display:none">2578548</div>
+    <!------------ 加载菜单按钮👇 ------------------------->
+    <div class="menucontainer">
+        
+        
+        <div class="mchocie description">
+            <a data-pjax href="/" class="menubutton" style="margin-right: 15px;">
+                <i><img class="icon menuicon" src="" alt="首页"></i>&nbsp;<span
+                    data-text="首页">首页</span>
+            </a>
+        </div>
+        
+        
+        
+        <div class="mchocie description">
+            <a data-pjax href="/archives" class="menubutton" style="margin-right: 15px;">
+                <i><img class="icon menuicon" src="" alt="归档"></i>&nbsp;<span
+                    data-text="归档">归档</span>
+            </a>
+        </div>
+        
+        
+        
+        <div class="mchocie description">
+            <a data-pjax href="/tags" class="menubutton" style="margin-right: 15px;">
+                <i><img class="icon menuicon" src="" alt="标签"></i>&nbsp;<span
+                    data-text="标签">标签</span>
+            </a>
+        </div>
+        
+        
+        
+        <div class="mchocie description">
+            <a data-pjax href="https://blog.elex.vip/post/qi-qi-guai-guai-de-yan-yu" class="menubutton" style="margin-right: 15px;">
+                <i><img class="icon menuicon" src="" alt="关于"></i>&nbsp;<span
+                    data-text="关于">关于</span>
+            </a>
+        </div>
+        
+        
+
+        
+        
+        
+        <!--  -->
+    </div>
+    <!------------ 加载菜单按钮👆 ------------------------->
+    <hr>
+    <style>
+    .copyright {
+        font-size: 15px;
+        color: #d9d9d9;
+    }
+
+
+    @media screen and (min-width: 1200px) {
+        .foot {
+            width: 100%;
+            height: 130px;
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        .foot {
+            display: none;
+        }
+    }
+</style>
+
+<body>
+    <div class="foot">
+        <div id="footinfo">Powered by <a href="https://blog.elex.vip" target="_blank">Elex</a> | Theme: <a
+                href="https://github.com/850552586/gridea-theme-fog">Fog</a>
+            <div>
+                
+                <div id="sitegotimeDate">载入天数...</div>
+                <div id="sitegotimes">载入时分秒...</div>
+                <div id="cussitetime" style="display:none">03/22/2022</div>
+                
+            </div>
+            <div>
+                
+            </div>
+            <div class="copyright" style="color:white;text-align: center;">Copyright © 2022  备案号:  <a href="https://beian.miit.gov.cn/" target="_blank">湘ICP备19014789号</a>
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+
+<script>
+    //----------------------站点运行时间
+    var now = new Date();
+
+    function createtime() {
+        var sitegotime = document.getElementById("cussitetime").innerHTML + " 00:00:00";
+        var grt = new Date(sitegotime); //此处修改你的建站时间或者网站上线时间 
+        now.setTime(now.getTime() + 250);
+        days = (now - grt) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if (String(hnum).length == 1) {
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if (String(mnum).length == 1) {
+            mnum = "0" + mnum;
+        }
+        seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if (String(snum).length == 1) {
+            snum = "0" + snum;
+        }
+        document.getElementById("sitegotimeDate").innerHTML = "本站已安全运行 " + dnum + " 天 ";
+        document.getElementById("sitegotimes").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+
+    let intervalId = setInterval("createtime()", 250);
+</script>
+
+    </div>
+
+    <img class="moon" src="https://blog.elex.vip/media/images/moon.png" onclick="moonlight()">
+    <script src="https://blog.elex.vip/media/js/wordshow.js"></script>
+    
+    <!--------------- 左侧菜单栏👆 ------------------------>
+
+    <!----------------- 顶部菜单栏👇 ------------------------>
+    
+    <!----------------- 顶部菜单栏👆 ------------------------>
+
+<!--核心功能加载-->
+<script src="https://blog.elex.vip/media/js/mainfunc.js"></script>
+
+<!------------- Fog1.0版本彩蛋👇 -------------->
+    <!-- <section id="terrestrial" class="popup">
+        <a href="#" class="back">&lt; back</a>
+    </section>
+
+    <div class="flycontainer">
+        <div class="flyword">御风飞行中...</div>
+    </div>
+
+    <script>
+        $("#fog_go").click(function(){fog_go()});
+        async function fog_go(){
+            $(".bars").hide()
+            $("#live2d").hide()
+            await sleep(3000);
+            $(".flycontainer").css("display","flex");
+            $(".popup").fadeOut(500)
+            await sleep(2000);
+            var sitename = "Elex&#39;Blog";
+            getFogUser(sitename);
+        }
+
+        function fog_goregis(){
+            var sitename = "Elex&#39;Blog";
+            var siteurl = "https://blog.elex.vip";
+            regisFogUser(sitename,siteurl);
+        }
+        fog_goregis();
+    </script> -->
+<!------------- Fog1.0版本彩蛋👆 -------------->
+<script>
+    function change_topmenu(){
+        tmcolor = "antiquewhite"
+        tsnamecolor = "antiquewhite"
+        $(".navbar-inverse .navbar-nav>li>a").css("color",tmcolor)
+        $(".navbar-inverse .navbar-brand").css("color",tsnamecolor)
+        $(".navbar-fixed-top").css("border-radius","0 0 10px 10px")
+    }
+</script>
+
+<!------ 根据自定义配置声明变量👇 --------------------->
+    
+    <script>
+        var postnumChoice = false
+    </script>
+    
+    
+    <script>
+        var shareChoice = true
+    </script>
+    
+    
+    <script>
+        var donateChoice = false
+    </script>
+    
+    
+    <script>
+        var searchChoice = true
+    </script>
+    
+    <script>let postsnum = 0;</script>
+    <div id="side-posttitle" style="display: none;">
+    
+    
+    番外篇——江恩矩阵图简介
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    番外篇——成功率100%的通达信指标公式，你敢相信吗？
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十八篇——一通达信板块函数INSUM、BLOCKSETNUM简介以及应用（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十七篇——一阳穿三线选股指标公式，简单却实用（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十六篇——均线粘合突破选股指标公式怎么写？（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十五篇——均线多头排列选股公式，选出均线多头刚起步的标的（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十四篇——如何编写均线斜率大于45度的公式（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十三篇——通达信自动提示穿头破脚K线组合形态（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十二篇——「硬核讲解」通达信如何跨周期引用均线？（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十一篇——MACD与KDJ合二为一指标公式怎么编写？（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二十篇——通达信自动提示启明星、黄昏星K线组合形态（含指标公式代码）（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十九篇——创业板、科创板也适用的通达信涨停指标公式怎么写？（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十八篇——怎么在通达信上设置连板次数以及所属行业（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十七篇——手把手教你调整通达信指标的颜色、线形粗细、线型（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十六篇——学会标记函数，简单实现通达信指标公式做标记（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十五篇——如何编写通达信指标公式实现自定义K线（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十四篇——如何用通达信绘图函数画线？（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十三篇——通达信指标公式绘图函数简介——自定义指标颜色、线型等（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十二篇——通达信指标公式编写常用函数（八）——MAX、MIN、BETWEEN、ABS（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十一篇——通达信指标公式编写常用函数（七）——SUMBARS以及MACD底背离（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第十篇——通达信指标公式编写常用函数（六）——SUM、IF（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第九篇——通达信指标公式编写常用函数（五）——BARSLAST（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第八篇——通达信指标公式编写常用函数（四）——EVERY、COUNT（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第七篇——通达信指标公式编写常用函数（三）——HHVBARS、LLVBARS（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第六篇——通达信指标公式编写常用函数（二）——HHV、LLV（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第五篇——通达信指标公式编写常用函数（一）——REF、MA、EMA、CROSS（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第四篇——通达信指标公式编写基础（二）（从零起步编写通达信指标公式系列） 
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第三篇——通达信指标公式编写基础（一）（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第二篇——通达信怎么编写指标公式以及通达信公式的使用方法（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    第一篇——为什么要学编写通达信指标公式（从零起步编写通达信指标公式系列）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    MongoDB 命令小记
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    Linux CentOS/RHEL firewall-cmd常用命令
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    Docker 常用命令
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    SpringBoot集成Quartz自定义表管理定时器
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    
+    
+    java面试题之HashMap常见面试题总结
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    BigDecimal Postman 返回正常精度前端接收不正常（前后端交互丢失精度）
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    Java-Poi 指定列单元格式
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    Sql Server + Mybatis-plus使用Page时报错
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    一个对象中有很多属性，假如有个属性不想在日志中打印，其他属性都打印
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    docker 安装Jenkins自动部署SpringBoot项目及所遇到的问题集合
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    </div>
+    
+        <script>
+            var menupos = 'left';
+            $("#siteinfo-postsnum").html(postsnum);
+        </script>
+    
+    <script>
+        let commentsHide = false
+    </script>
+    <!------ 根据自定义配置声明变量👆 --------------------->
+
+
+    <!----------根据自定义配置设置图标信息👇---------->
+    <script>
+        var icondict = new Array();
+    </script>
+    
+        
+    
+    <!----------根据自定义配置设置图标信息👆---------->
+</body>
+
+<script src="https://blog.elex.vip/media/share/dist/Share.js"></script>
+<!-- 页面pjax测试 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.js"></script>
+<!--确保jQuery已经在此之前加载-->
+<!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+<script src="https://blog.elex.vip/media/js/all-pjax.js"></script>
+<script>
+    //-------------------------------说说功能👇--------------------------------------
+    let talksall = [];
+    let talks = [];
+    let talkindex = 0;
+    get();
+
+    function get() {
+        var t = JSON.parse('[]');
+        talkindex = t.length - 1;
+        for (var i = 0; i <= t.length - 1; i++) {
+            var d = {};
+            d["time"] = t[i].time;
+            d["author"] = t[i].author;
+            d["text"] = t[i].text;
+            d["img"] = t[i].img;
+            talksall.push(d);
+        }
+    }
+
+    function add() {
+        for (var i = talkindex; i >= 0 && i > talkindex - 3; i--) {
+            talks.push(talksall[i]);
+        }
+        talkindex = (talkindex - 3) >= 0 ? (talkindex - 3) : -1;
+        if (talkindex < 0) $("#getmorebt").hide();
+        show();
+    }
+
+    function show() {
+        var talkT = document.getElementById("talkContainer");
+        talkT.innerHTML = "";
+        for (var i = 0; i < talks.length; i++) {
+            if (talks[i].img != '') {
+                talkT.innerHTML += '\
+            <div class="talk" v-for="t in talks"> \
+                <span data-fancybox="images" href="' + talks[i].img + '"><img src="' + talks[i].img + '" class="talkimg"></span> \
+                <div class="ainfo">\
+                    <div class="ainfo-intro">\
+                        <div class="author">' + talks[i].author + '</div>·\
+                        <div class="time">' + talks[i].time + '</div>\
+                    </div>\
+                </div>\
+                <div class="talkcontent">' + talks[i].text + '\
+                </div\>\
+            ';
+            } else {
+                talkT.innerHTML += '\
+            <div class="talk" v-for="t in talks"> \
+                <div class="ainfo">\
+                    <div class="ainfo-intro">\
+                        <div class="author">' + talks[i].author + '</div>·\
+                        <div class="time">' + talks[i].time + '</div>\
+                    </div>\
+                </div>\
+                <div class="talkcontent">' + talks[i].text + '\
+                </div\>\
+            ';
+            }
+        }
+    }
+    //-------------------------------说说功能👆--------------------------------------
+</script>
+
+<!---->
+<script>
+    function replaceAvatar() {
+        twikoo_avatar = $(".tk-avatar-img");
+        for (var i = 0; i < twikoo_avatar.length; i++) {
+            var asrc = twikoo_avatar.eq(i).attr('src');
+            if (asrc.search('cn.gravatar.com') != -1) {
+                twikoo_avatar.eq(i).attr('src', 'https://blog.elex.vip/media/images/comavatar.png');
+            }
+        }
+    }
+
+    function showWechat() {
+        var wechat = '';
+        alert("博主微信号：" + wechat);
+        return false;
+    }
+</script>
+
+<script>
+    /**
+     * https://github.com/tangkaichuan/gridea-search
+     */
+    // 检查缓存是否最新
+    function checkCache() {
+        var caches_postsnum = localStorage.getItem("postsnum");
+        var pt = document.getElementById("side-posttitle").innerHTML;
+        pt = pt.replace(/\s+/g, '').replace(/<script>.*?<\/script>/gi, "")
+        var ptlen = pt.length;
+        var ptlen_storage = localStorage.getItem("poststitlelen");
+        if (caches_postsnum != postsnum || ptlen != ptlen_storage) {
+            console.log("更新缓存");
+            return false
+        }
+        return true;
+    }
+
+    (function () {
+        var CACHES = checkCache()
+        if (!CACHES) {
+            var NOW = Date.now()
+            var API_CONTENT = '../api-content/index.html' + '?_=' + NOW
+            preload(API_CONTENT);
+            getContents(show_getContentresult);
+        }
+
+        function show_getContentresult(data) {
+            console.log("获取成功");
+            var postslen = data["posts"].length;
+            localStorage.setItem('postsnum', postslen);
+            var poststitlelen = 0;
+            var pt = document.getElementById("side-posttitle").innerHTML;
+            pt = pt.replace(/\s+/g, '').replace(/<script>.*?<\/script>/gi, "");
+            localStorage.setItem('poststitlelen', pt.length);
+        }
+
+
+
+        // preload
+        function preload(url) {
+            var preloadLink = document.createElement('link')
+            preloadLink.href = url
+            preloadLink.rel = 'preload'
+            preloadLink.as = 'fetch'
+            preloadLink.crossOrigin = 'anonymous'
+            document.head.appendChild(preloadLink)
+        }
+
+        // 异步 GET 请求
+        function get(obj) {
+            var xhr = new XMLHttpRequest()
+            xhr.open('get', obj.url, true)
+            xhr.send(null)
+            xhr.onreadystatechange = function () {
+                // 异步请求：响应状态为4，数据加载完毕
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        obj.success(xhr.responseText)
+                    } else {
+                        obj.error(xhr.status)
+                    }
+                }
+            }
+        }
+
+        // 获取博客全文 api
+        function getContents(callback) {
+            if (CACHES) {
+                callback(CACHES.contents)
+            } else {
+                get({
+                    url: API_CONTENT,
+                    success: function (data) {
+                        callback(JSON.parse(data));
+                        localStorage.setItem('ContentsCache', data);
+                        getStorageContent();
+                    }
+                })
+            }
+        }
+    })()
+    //------------------------核心功能--pjax全局渲染👇-------------------
+    let talkinit = false;
+    $(document).pjax('a[data-pjax]', '#main', {
+        fragment: '#main',
+        timeout: 8000
+    }).on('pjax:complete', function () {
+        //代码块高亮渲染
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+        //文章热度
+        if(postnumChoice){
+            getHotnum();
+        }
+        //文章索引
+        toginit();
+        //清空搜索栏
+        if (searchChoice) {
+            searchInit();
+            searchInput.value = "";
+        }
+        var pl = window.location.pathname;
+        //说说更新
+        if (pl.search("talk") != -1 && !talkinit) {
+            add();
+            talkinit = true;
+        } else if (pl.search("talk") != -1) {
+            show();
+        }
+        if (pl.search("post") != -1) {
+            if (shareChoice)
+                shareInit();
+            if (donateChoice)
+                donateInit();
+            if ("twikoo" == "default"&&!commentsHide) {
+                $("#comment").hide()
+                commentsHide = true
+            }
+            lazyload();
+            codeinit();
+            if ("twikoo" == "twikoo") {
+                //twikoo头像更换
+                setTimeout(replaceAvatar, 3000);
+                setTimeout(replaceAvatar, 8000); //部分博主站点速度加载过慢，再添加一个延迟
+            }
+        }
+        if (btstate == true)
+            dropdown();
+    }).on('pjax:start', function () {
+        $(".pjaxloading").fadeIn(50);
+    }).on('pjax:end', function () {
+        $(".pjaxloading").fadeOut(50);
+    });
+    //------------------------核心功能--pjax全局渲染👆-------------------
+
+    //-------------------------------------------------搜索
+    // 获取搜索框、搜索按钮、清空搜索、结果输出对应的元素
+    if (searchChoice) {
+        var searchInput = document.querySelector('.search-input');
+        var searchResults = document.querySelector('.search-results');
+    }
+    // 申明保存文章的标题、链接、内容的数组变量
+    var searchValue = '',
+        arrItems = [],
+        arrLinks = [],
+        arrTitles = [],
+        arrContents = [],
+        arrResults = [],
+        indexItem = [],
+        itemLength = 0;
+    var tmpDiv = document.createElement('div');
+    tmpDiv.className = 'result-item';
+
+
+    function getStorageContent() {
+        var data = localStorage.getItem('ContentsCache');
+        data = JSON.parse(data);
+        posts = data["posts"];
+        for (var i = 0; i < posts.length; i++) {
+            arrLinks[i] = posts[i].link;
+            arrTitles[i] = posts[i].title;
+            arrContents[i] = posts[i].content;
+            itemLength++;
+        }
+    }
+    if (checkCache())
+        getStorageContent();
+    // 输入框内容变化后就开始匹配，可以不用点按钮
+    // 经测试，onkeydown, onchange 等方法效果不太理想，
+    // 存在输入延迟等问题，最后发现触发 input 事件最理想，
+    // 并且可以处理中文输入法拼写的变化
+    searchInput.oninput = function () {
+        setTimeout(searchConfirm, 0);
+    }
+    searchInput.onfocus = function () {
+        searchResults.style.display = 'block';
+    }
+
+    function searchConfirm() {
+        if (searchInput.value == '') {
+            searchResults.style.display = 'none';
+        } else if (searchInput.value.search(/^\s+$/) >= 0) {
+            // 检测输入值全是空白的情况
+            searchInit();
+            var itemDiv = tmpDiv.cloneNode(true);
+            itemDiv.innerText = '请输入有效内容...';
+            searchResults.appendChild(itemDiv);
+        } else {
+            // 合法输入值的情况
+            searchInit();
+            searchValue = searchInput.value;
+            // 在标题、内容中查找
+            searchMatching(arrTitles, arrContents, searchValue);
+        }
+    }
+
+    // 每次搜索完成后的初始化
+    function searchInit() {
+        arrResults = [];
+        indexItem = [];
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'block';
+    }
+
+    function searchMatching(arr1, arr2, input) {
+        // 忽略输入大小写
+        input = new RegExp(input, 'i');
+        var step = 10;
+        // 在所有文章标题、内容中匹配查询值
+        for (i = 0; i < itemLength; i++) {
+            var indexContent = arr2[i].search(input);
+            //标题匹配
+            if (arr1[i].search(input) != -1) {
+                indexItem.push(i); // 保存匹配值的索引
+                if (indexContent != -1) {
+                    startindex = (indexContent - step) >= 0 ? (indexContent - step) : 0;
+                    var searchcontent = arr2[i].slice(indexContent - step, indexContent + 5)
+                    arrResults.push("....." + searchcontent + ".....");
+                } else
+                    arrResults.push("");
+            }
+            //内容匹配
+            else if (indexContent != -1) {
+                indexItem.push(i); // 保存匹配值的索引
+
+                startindex = (indexContent - step) >= 0 ? (indexContent - step) : 0;
+                var searchcontent = arr2[i].slice(indexContent - step, indexContent + 5)
+                arrResults.push("....." + searchcontent + ".....");
+            }
+        }
+
+        // 输出总共匹配到的数目
+        var totalDiv = tmpDiv.cloneNode(true);
+        totalDiv.innerHTML = '<b>总匹配：' + indexItem.length + ' 项<hr></b>';
+        searchResults.appendChild(totalDiv);
+
+        // 未匹配到内容的情况
+        if (indexItem.length == 0) {
+            var itemDiv = tmpDiv.cloneNode(true);
+            itemDiv.innerText = '未匹配到内容...';
+            searchResults.appendChild(itemDiv);
+        }
+
+        // 将所有匹配内容进行组合
+        for (i = 0; i < arrResults.length; i++) {
+            var itemDiv = tmpDiv.cloneNode(true);
+            itemDiv.innerHTML = '<a data-pjax class="searchresults" href="' + arrLinks[indexItem[i]] + '"><b>[' +
+                arrTitles[indexItem[i]] +
+                ']</b><p>' + arrResults[i] + '</p></a><hr />';
+            searchResults.appendChild(itemDiv);
+        }
+    }
+</script>
+
+
+
+<!--------------------- 菜单栏图标加载功能👇 ----------------------->
+<script>
+var menulist = $(".menuicon");
+var menulength = menulist.length;
+for (var i = 0; i < menulength; i++) {
+    var altname = menulist.eq(i).attr("alt");
+    var iconurl = icondict[altname];
+    if (iconurl == undefined || iconurl == '')
+        continue;
+    if (iconurl == 'Home') {
+        menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/Home.png");
+menulist.eq(i).show();
+} else if (iconurl == 'Archive') {
+menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/Archive.png");
+menulist.eq(i).show();
+} else if (iconurl == 'Tag') {
+menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/Tag.png");
+menulist.eq(i).show();
+} else if (iconurl == 'About') {
+menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/About.png");
+menulist.eq(i).show();
+} else if (iconurl == 'Talk') {
+menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/Talk.png");
+menulist.eq(i).show();
+} else if (iconurl == 'Friends') {
+menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/Friends.png");
+menulist.eq(i).show();
+} else if (iconurl == 'Fly') {
+menulist.eq(i).attr("src", "https://blog.elex.vip/media/images/wind.png");
+menulist.eq(i).show();
+} else {
+menulist.eq(i).attr("src", iconurl);
+menulist.eq(i).show();
+}
+}
+</script>
+<!--------------------- 菜单栏图标加载功能👆 ----------------------->
+
+<script>
+    //--------------------bber-onetalk加载👇--------------------------------
+    function bberonetalkLoad(){
+        bberjsonurl = '';
+        if ( $("#bber-talk").length > 0 ) {
+        jsonUrl = bberjsonurl
+        $.getJSON(jsonUrl+"?t="+Date.parse( new Date()),function(res){
+        var bberHtml = ''
+        $.each(res.data, function(i, item){
+            d = new Date(item.date)
+            date = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate() +' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()
+            dataTime = '<span class="datatime">'+date+'</span>'
+            bberHtml += '<li class="item item-'+(i+1)+'">'+dataTime+'： <a data-pjax href="https://blog.elex.vip/bber">'+item.content+'</a></li>'
+        });
+        $('#bber-talk').append('<span class="index-talk-icon"><svg viewBox="0 0 1024 1024" width="21" height="21"><path d="M184.32 891.667692c-12.603077 0-25.206154-2.363077-37.809231-7.876923-37.021538-14.966154-59.864615-49.624615-59.864615-89.009231v-275.692307c0-212.676923 173.292308-385.969231 385.969231-385.969231h78.76923c212.676923 0 385.969231 173.292308 385.969231 385.969231 0 169.353846-137.846154 307.2-307.2 307.2H289.083077l-37.021539 37.021538c-18.904615 18.116923-43.323077 28.356923-67.741538 28.356923zM472.615385 195.347692c-178.018462 0-322.953846 144.935385-322.953847 322.953846v275.692308c0 21.267692 15.753846 29.144615 20.48 31.507692 4.726154 2.363077 22.055385 7.876923 37.021539-7.08923l46.473846-46.473846c6.301538-6.301538 14.178462-9.452308 22.055385-9.452308h354.461538c134.695385 0 244.184615-109.489231 244.184616-244.184616 0-178.018462-144.935385-322.953846-322.953847-322.953846H472.615385z"></path><path d="M321.378462 512m-59.076924 0a59.076923 59.076923 0 1 0 118.153847 0 59.076923 59.076923 0 1 0-118.153847 0Z"></path><path d="M518.301538 512m-59.076923 0a59.076923 59.076923 0 1 0 118.153847 0 59.076923 59.076923 0 1 0-118.153847 0Z"></path><path d="M715.224615 512m-59.076923 0a59.076923 59.076923 0 1 0 118.153846 0 59.076923 59.076923 0 1 0-118.153846 0Z"></path></svg></span><ul class="talk-list">'+bberHtml+'</ul>')
+        //Lately({ 'target': '#bber-talk .datatime' });
+        });
+        function Roll (){
+        var list_li = $('.talk-list li'),cur_li = list_li.first(),last_li = list_li.last();
+        last_li.after(cur_li);
+        };
+        setInterval(Roll,3000);
+    }
+    }
+  //--------------------bber-onetalk加载👆--------------------------------
+</script>
+
+<script>
+    var ClicksideState = 1
+    var cur_readingmode = false
+    function readingmode(){
+        if (!cur_readingmode){
+            if(menupos == 'left'){
+                if(ClicksideState==1)
+                menu_openclose1()
+            }
+            $("#tab1").fadeOut(50)
+            $("#bg").fadeOut(50)
+            $(".navbar").fadeOut(50)
+            $(".markdownIt-TOC li a").css("color","black")
+            cur_readingmode = true
+        }else{
+            if(menupos == 'left'){
+                if(ClicksideState==0)
+                    menu_openclose1()
+            }
+            $("#tab1").fadeIn(50)
+            $("#bg").fadeIn(50)
+            $(".navbar").fadeIn(50)
+            $(".markdownIt-TOC li a").css("color","antiquewhite")
+            cur_readingmode = false  
+        }
+    }
+</script>
+
+
+<!----夜间模式👇-->
+<script>
+    var moonlightState = false
+    function moonlight(){
+        if(!moonlightState){
+            $("#bg").fadeOut(200)
+            $('body').css("background","rgba(0,0,0,0.8)")
+            $(".markdownIt-TOC li a").css("color","white")
+            $(".text p, .text ul").css("color","white")
+            $("#articlecontent").css("color","white")
+            $(".post-copyright").css("background","black")
+            $('blockquote').css("background","black")
+            $("#articlecontent").css("background","rgba(0,0,0,0.9)")
+            $(".shareContainer").css("background","black")
+            $(".share").css("background","black")
+            moonlightState = true
+            $(".moon").attr("src","https://blog.elex.vip/media/images/sun.png")
+        }else{
+            $("#bg").show()
+            $(".markdownIt-TOC li a").css("color","antiquewhite")
+            $(".text p, .text ul").css("color","rgba(0, 0, 0, 0.7)")
+            $("#articlecontent").css("color","black")
+            $(".post-copyright").css("background","#f9f9f9")
+            $('blockquote').css("background","#eff8f0")
+            $("#articlecontent").css("background","white")
+            $(".shareContainer").css("background","white")
+            $(".share").css("background","white")
+            $(".moon").attr("src","https://blog.elex.vip/media/images/moon.png")
+            $('body').css("background","white")
+            moonlightState = false
+        }
+    }
+</script>
+<!----夜间模式👆--></div>
+            <!--------------- pc端菜单栏👆 ---------------->
+
+            <!-- ----------------左侧菜单栏html 👇-------------------------------------->
+            
+            <div>
+                <div id="tab1" class="tab">
+                    <div class="bars">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="close"></div>
+                </div>
+                <div class="col-md-1 col-lg-3"></div>
+                <!-- main标签，pjax渲染时加载以下内容👇 -->
+                <div id="main" class="col-xs-12 col-sm-12 col-md-12 col-lg-7" style="padding:0;">
+                    <div class="readingmode" onclick="readingmode()">阅</div>
+                    <link rel="stylesheet" href="https://blog.elex.vip/media/css/font-awesome.css">
+
+<body>
+    <div class="allcontent" id="postdetail">
+        <div class="postshow postpadding" style="padding-bottom: 0;">
+            
+            <div class="postdetailimg">
+                <img src="https://blog.elex.vip/post-images/di-shi-si-pian-ru-he-yong-tong-da-xin-hui-tu-han-shu-hua-xian-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie.webp" class="postimage" style="cursor:auto">
+            </div>
+            <div class="postinfo-detail">
+                <div class="postdate"><i class="fa fa-calendar"></i>2024-11-14</div>
+                <div class="poststatus postdate"><i class="fa fa-clock-o"></i> 5 min read</div>
+                <div class="posttag">
+                    
+                    <a data-pjax href="https://blog.elex.vip/tag/SPQk3nKvmM/" class="postlink">
+                        <i class="fa fa-tag"></i> TDS
+                    </a>
+                    
+                </div>
+            </div>
+            
+        <div id="articlecontent">
+            <div id="texttitle" style="text-align: center">
+                <h2 id="ptitle">第十四篇——如何用通达信绘图函数画线？（从零起步编写通达信指标公式系列） </h2>
+                <!-- id 将作为查询条件 -->
+                <div id="pl" style="display:none">https://blog.elex.vip/post/di-shi-si-pian-ru-he-yong-tong-da-xin-hui-tu-han-shu-hua-xian-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie/</div>
+                <div id="rootaddr" style="display:none">https://blog.elex.vip</div>
+                
+            </div>
+            <div class="text ">
+                <p><strong>内容提要</strong>：本文主要介绍了通达信指标公式常用绘图函数的第一种类型——画线函数，讲解了DRAWNULL、NODRAW、PLOYLINE、DRAWSL这四个画线函数的具体用法。</p>
+<p>在上一篇文章中，给大家简单介绍了通达信指标公式绘图函数的三种类型，接下来将详细讲解这些函数的具体用法。说到绘图函数，就不得不提到DRAW。DRAW的英文意思是“画”，许多绘图函数的名称都包含了DRAW。因此，在正式学习这些函数之前，我们有必要了解一下DRAW的含义。</p>
+<p>今天主要讲解画线函数DRAWNULL、NODRAW、PLOYLINE、DRAWSL，简单来说画线函数可以用来画各种类型的线。</p>
+<p>首先，介绍两个比较另类的函数NODRAW和DRAWNULL，准确来说NODRAW应该属于修饰函数，DRAWNULL属于引用函数，但是这两个函数和画线有关系，所以我就把这两个函数归类在画线函数。</p>
+<h2 id="一-nodraw函数">一、NODRAW函数</h2>
+<p>含义：不画该线，只在加载指标的窗口左上角显示数值。</p>
+<p>举例：</p>
+<pre><code class="language-plaintext">MA5:MA(CLOSE,5),NODRAW;{5日均线，不画出来}
+MA10:MA(CLOSE,10);{10日均线，会正常显示};
+</code></pre>
+<p><img src="https://blog.elex.vip/post-images/1731571787247.png" alt="" loading="lazy"><br>
+这里可能有人会想到在<a href="https://blog.elex.vip/post/di-san-pian-tong-da-xin-zhi-biao-gong-shi-bian-xie-ji-chu-yi-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie">《第三篇——通达信指标公式编写基础（一）（从零起步编写通达信指标公式系列）》</a>中讲到过的赋值符——冒号加等号（:=），也是不会画出来，这和NODRAW有什么区别呢？可以看下面这张图，可以看出MA5如果使用冒号加等号（:=），把指标加载到主图，MA5毫无存在感，在左上角也不显示数值，如果不看指标公式的代码，就好像完全不存在。通过两张图的对比，应该能看出区别了。<br>
+<img src="https://blog.elex.vip/post-images/1731571794526.png" alt="" loading="lazy"></p>
+<h2 id="二-drawnull函数">二、DRAWNULL函数</h2>
+<p>含义：返回无效数，DRAWNULL由DRAW和NULL两部分组成，DRAW是“画”，NULL的英文意思是“无效的、空的”，组合起来可以简单理解为“啥也不干”。</p>
+<p>举例:</p>
+<pre><code class="language-plaintext">MA60:=MA(C,60);{60日均线，这里是:=，不会在主图上画出均线}
+IF(MA60&gt;REF(MA60,1),MA60,DRAWNULL);{如果今天60日均线的值大于昨天，即均线向上，就画出60日均线，否则不画};
+</code></pre>
+<p><img src="https://blog.elex.vip/post-images/1731571852718.png" alt="" loading="lazy"><br>
+把指标加载到主图，可以发现震荡时，断断续续的，因为震荡时均线一会向上一会向下。这样比较难看，如果想下跌的时候也画出均线，只不过均线颜色不同，把上面的MA60的:=改为:就可以了。如果要指定均线颜色，后面再讲。</p>
+<p>看到这里，可能又有疑问：NODRAW和DRAWNULL有什么区别呢？</p>
+<pre><code class="language-plaintext">MA5:MA(C,5),NODRAW;
+MA10:MA(C,10),DRAWNULL;
+</code></pre>
+<p>把这个公式加载到主图，对比可以发现，MA5、MA10这两条均线都不显示。但是MA5有数值，而MA10因为使用了DRAWNULL，显示的是“-”，也就是无效数据，空的。<br>
+<img src="https://blog.elex.vip/post-images/1731571878734.png" alt="" loading="lazy"></p>
+<h2 id="三-ployline函数">三、PLOYLINE函数</h2>
+<p>含义：画折线段</p>
+<p>使用方法:<br>
+PLOYLINE(COND,PRICE)，满足COND条件时，把PRICE画折线连起来</p>
+<p>举例:</p>
+<pre><code class="language-plaintext">PLOYLINE(H=HHV(H,20),H);{创20日新高的时候，把高点(最高价H)画线连起来}
+</code></pre>
+<p>不知道什么意思就看下图吧，把创新高HIGH=HHV(HIGH,20);写成指标，加载到附图，这样创新高的时候都可以看出来（红色箭头处对应的都是创新高）。创了新高，就把对应K线的最高价H（红圈处）连起来。<br>
+<img src="https://blog.elex.vip/post-images/1731571921017.png" alt="" loading="lazy"></p>
+<p>四、DRAWSL函数<br>
+含义：画斜线</p>
+<p>使用方法:</p>
+<pre><code class="language-plaintext">DRAWSL(COND,PRICE,SLOPE,LEN,DIRECT);
+</code></pre>
+<p>当满足满足COND条件时，从PRICE位置起画斜线。</p>
+<p>SLOPE表示斜率，SLOPE为0的时候，就表示画水平线；SLOPE为10000时，画垂直线。</p>
+<p>LEN表示长度。当画的线为水平线或者斜线时，长度为延伸的周期数；当画的线为垂直线，长度为向上的像素高度。</p>
+<p>DIRECT表示延伸方向。当画的线为水平线或者斜线时，DIRECT为0向右画线，1向左画线，2左右都画线；当画的线为垂直线，DIRECT为0向上画线，1向下画线，2上下都画线。</p>
+<p>举例：</p>
+<pre><code class="language-plaintext">DRAWSL(H=HHV(H,20),H,0,3,0);{创20日新高的时候，往右画水平线，延伸3个周期};
+</code></pre>
+<p>DRAWSL有5个参数，看代码的时候可能记不住参数的含义，可以看指标公式编辑器下方的动态翻译。<br>
+<img src="https://blog.elex.vip/post-images/1731571976528.png" alt="" loading="lazy"><br>
+<img src="https://blog.elex.vip/post-images/1731571981245.png" alt="" loading="lazy"><br>
+限于篇幅，今天只介绍DRAWNULL、NODRAW、PLOYLINE、DRAWSL这四个画线函数，下一期将介绍DRAWLINE、DRAWKLINE、STICKLINE。</p>
+
+            </div>
+            <hr style="width: 80%;">
+            
+            <div class="postfooter">
+                <ul class="post-copyright">
+                    <li><strong>文章作者：</strong>Elex</li>
+            <li><strong>原文链接：</strong>https://blog.elex.vip/post/di-shi-si-pian-ru-he-yong-tong-da-xin-hui-tu-han-shu-hua-xian-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie/</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用<i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA
+                许可协议。转载请注明出处！</li>
+            </ul>
+        </div>
+        
+            <div class="shareContainer">
+                <div class="share" style="height:30px;background: white;">
+                    <a class="qq" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/qqs.png" alt=""></i></a>
+                    <a class="wechat" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/wechats.png" alt=""></i></a>
+                    <a class="weibo" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/weibos.png" alt=""></i></a>
+                    <a class="qzone" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/qzones.png" alt=""></i></a>
+                    <a class="douban" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/doubans.png" alt=""></i></a>
+                    <a class="facebook" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/facebooks.png" alt=""></i></a>
+                    <a class="twitter" href=""><i><img class="shareicon"
+                                src="https://blog.elex.vip/media/images/twitter.png" alt=""></i></a>
+                </div>
+            </div>
+            
+        <div id="otherpost">
+            
+            <a  data-pjax class="prev-post-pc" href="https://blog.elex.vip/post/di-shi-wu-pian-ru-he-bian-xie-tong-da-xin-zhi-biao-gong-shi-shi-xian-zi-ding-yi-k-xian-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie/"  style="color: black;">
+                <div id="ppcontainer">
+                    
+                    <img src="https://blog.elex.vip/post-images/di-shi-wu-pian-ru-he-bian-xie-tong-da-xin-zhi-biao-gong-shi-shi-xian-zi-ding-yi-k-xian-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie.jpeg" style="width: 100%;" class="opimg">
+                    
+                    <h4 class="optitle">第十五篇——如何编写通达信指标公式实现自定义K线（从零起步编写通达信指标公式系列） </h4>
+                </div>
+            </a>
+            <div class="prev-post">
+                上一篇 <a  data-pjax href="https://blog.elex.vip/post/di-shi-wu-pian-ru-he-bian-xie-tong-da-xin-zhi-biao-gong-shi-shi-xian-zi-ding-yi-k-xian-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie/">第十五篇——如何编写通达信指标公式实现自定义K线（从零起步编写通达信指标公式系列） </a>
+            </div>
+            
+            
+            <a data-pjax class="next-post-pc" href="https://blog.elex.vip/post/di-shi-san-pian-tong-da-xin-zhi-biao-gong-shi-hui-tu-han-shu-jian-jie-zi-ding-yi-zhi-biao-yan-se-xian-xing-deng-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie/"  style="color: black;">
+                <div id="npcontainer">
+                    
+                    <img src="https://blog.elex.vip/post-images/di-shi-san-pian-tong-da-xin-zhi-biao-gong-shi-hui-tu-han-shu-jian-jie-zi-ding-yi-zhi-biao-yan-se-xian-xing-deng-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie.jpg" style="width: 100%;" class="opimg">
+                    
+                    <h4 class="optitle">第十三篇——通达信指标公式绘图函数简介——自定义指标颜色、线型等（从零起步编写通达信指标公式系列）</h4>
+                </div>
+            </a>
+            <div class="next-post">
+                下一篇 <a  data-pjax href="https://blog.elex.vip/post/di-shi-san-pian-tong-da-xin-zhi-biao-gong-shi-hui-tu-han-shu-jian-jie-zi-ding-yi-zhi-biao-yan-se-xian-xing-deng-cong-ling-qi-bu-bian-xie-tong-da-xin-zhi-biao-gong-shi-xi-lie/">第十三篇——通达信指标公式绘图函数简介——自定义指标颜色、线型等（从零起步编写通达信指标公式系列）</a>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+        <img class="modal-content" id="img01">
+    </div>
+</body>
+<script>
+    //文章阅读热度
+    var pl = $("#pl").html();
+    var rootaddr = $("#rootaddr").html();
+    pl = pl.replace(rootaddr, "");
+    $("#hotnum").attr('id', pl);
+</script>
+                    <div class="toc-container">
+                        <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E4%B8%80-nodraw%E5%87%BD%E6%95%B0">一、NODRAW函数</a></li>
+<li><a href="#%E4%BA%8C-drawnull%E5%87%BD%E6%95%B0">二、DRAWNULL函数</a></li>
+<li><a href="#%E4%B8%89-ployline%E5%87%BD%E6%95%B0">三、PLOYLINE函数</a></li>
+</ul>
+</li>
+</ul>
+
+                    </div>
+                    <div class="tog">
+                        <div class="toggleContainer">
+                            <div class="toggle">
+                                <i class="fas fa-angle-double-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------------------------- 评论系统👇 ------------------------->
+                    <div id="comment" class="comment">
+                        <div class="commentcontainer">
+                            
+                                
+                                    <!-- 文章热度功能和评论整合 -->
+<style>
+  .twikoo p {text-align: left;}
+</style>
+<body>
+<div id="tcomment"></div>
+</body>
+<script>
+twikoo.init({
+  envId: 'https://twikoo-swnz.vercel.app',
+  el: '#tcomment',
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+  // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+})
+</script>
+
+<script>
+  var appid = '';
+  var appkey = '';
+  if(typeof(AVinit)=="undefined"){
+    AV.init({
+      appId: appid,
+      appKey: appkey
+  });
+  AVinit = true;
+}
+</script>
+                                    <div class="clear"></div>
+                                
+                            
+                        </div>
+                    </div>
+                    <!---------------------------- 评论系统👆 ------------------------->
+                </div>
+                <!-- main标签，pjax渲染时加载以上内容👆 -->
+                <div class="col-md-1 col-lg-2"></div>
+                <div id="bg">
+                </div>
+            </div>
+            <!-- ----------------左侧菜单栏html 👆-------------------------------------->
+            
+        </div>
+        <!-- aplayer播放器加载👇 -->
+            
+            <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+</head>
+
+<body>
+    <div class="miniMode">
+        <meting-js id="myaplayer" server="netease" type="playlist" fixed="true" order="default" muted="muted">
+        </meting-js>
+    </div>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script>
+    function aplayerInit() {
+        var aplayerid = "464594636";
+        var aplayerserver = "netease";
+        var aplayerorder = "default";
+        var aplayerautoplay = "false";
+        var aplayer = $("#myaplayer");
+        aplayer.attr("server", aplayerserver);
+        aplayer.attr("id", aplayerid);
+        aplayer.attr("order", aplayerorder);
+        if (aplayerautoplay == "true")
+            aplayer.attr("autoplay", "true");
+    }
+    aplayerInit();
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/Aplayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<script>
+    function aplayerbtnInit() {
+        var player = document.querySelectorAll('meting-js')[0].aplayer;
+        if(player==undefined)return false;
+        player.lrc.hide();
+        var mbabtn = $("#mbaplayer");
+        if (player.paused == false) {
+            mbabtn.removeClass("fa-play-circle-o");
+            mbabtn.addClass("fa-pause-circle");
+        } else {
+            mbabtn.addClass("fa-play-circle-o");
+            mbabtn.removeClass("fa-pause-circle");
+        }
+    }
+
+    function aplayerPlay() {
+        var player = document.querySelectorAll('meting-js')[0].aplayer;
+        var mbabtn = $("#mbaplayer");
+        if (player.paused == true) {
+            player.play();
+            mbabtn.removeClass("fa-play-circle-o");
+            mbabtn.addClass("fa-pause-circle");
+        } else {
+            player.pause();
+            mbabtn.addClass("fa-play-circle-o");
+            mbabtn.removeClass("fa-pause-circle");
+        }
+    }
+</script>
+            
+        <!-- aplayer播放器加载👆 -->
+    </div>
+    <!-- 背景图加载方式👇 -->
+    <div id="bgchoice" style="display: none">link
+                </div>
+                
+                <div id="bgurl" style="display:none">https://github.com/Elex722/PicGo/blob/master/images/custom-bgimage.png?raw=true</div>
+                
+    <!-- 背景图加载方式👆 -->
+</body>
+
+<script>
+    //初始化
+    //更换twikoo头像
+    setTimeout(replaceAvatar,1000);
+    setTimeout(replaceAvatar,2000);
+    setTimeout(replaceAvatar,8000);
+    // --------为每张图片添加懒加载（lazyload）标签-->懒加载功能 👇------------
+    lazyload();
+    //为文章内所有代码块添加代码复制功能 👇
+    codeinit();
+    // ------代码高亮显示功能-------------
+    hljs.initHighlightingOnLoad();
+    if (shareChoice)
+        shareInit();
+    if (donateChoice)
+        donateInit();
+</script>
+
+<!------------------ 加载live2d模型功能（看板娘）👇 ---------------->
+
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = document.getElementById("domainname").innerHTML + "/"; //此处修改为你的域名，必须带斜杠
+</script>
+<script type="text/javascript" src="https://blog.elex.vip/media/js/live2d.js"></script>
+<script type="text/javascript" src="https://blog.elex.vip/media/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "https://blog.elex.vip/media/live2d/assets/tororo.model.json");
+</script>
+
+<!------------------ 加载live2d模型功能（看板娘）👆 ---------------->
+
+
+<!----------------------- 返回顶部按钮功能👇 --------------------->
+<script>
+    $(function () {
+        $('.toggleContainer').click(function () {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 800);
+        });
+        $(window).scroll(function () {
+            var st = $(window).scrollTop();
+            if (st > 30) {
+                $(".toggleContainer").fadeIn(400);
+            } else {
+                $(".toggleContainer").fadeOut(100);
+            }
+        });
+    });
+</script>
+<!----------------------- 返回顶部按钮功能👆 --------------------->
+
+
+<!------------ 加载全局背景图功能👇（开始时没有写好，这功能有点鸡肋/(ㄒoㄒ)/~~） -->
+<script>
+    var bgchoice = "link"
+    var bg = $('#bg');
+    var bgurl = document.getElementById("bgurl").innerHTML;
+    if (bgchoice == 'default')
+    {
+        for (var i = 0; i < 3; i++)
+            bgurl = bgurl.replace("\\", "/");
+        bgurl = "https://blog.elex.vip/" + bgurl;
+    }
+    bg.css("background", "url('" + bgurl + "')");
+
+    window.onload = function () {
+        aplayerbtnInit();
+    }
+</script>
+<!------------ 加载全局背景图功能👆（开始时没有写好，这功能有点鸡肋/(ㄒoㄒ)/~~） -->
+
+
+
+
+<script src="https://blog.elex.vip/media/js/index.js"></script>
+
+
+<script>
+    //加载后的事件同步（阅读量、移动端评论等
+    window.onload = function () {
+    //代码块高亮渲染
+    document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+    });
+        getHotnum();
+        var sharepc = $(".share").eq(0).html();
+        $(".share").eq(1).html(sharepc);   //插件只会寻找一个分享标签渲染，所以需要手动添加到移动端
+        aplayerbtnInit();
+        $(".hljs").css({
+            "padding": "20px"
+        })
+    }
+</script>
+
+<!-- <script src="https://blog.elex.vip/media/js/av-min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3.13.0/dist/av-min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.6.1/dist/av-live-query-min.js"></script> -->
